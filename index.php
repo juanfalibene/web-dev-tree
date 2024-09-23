@@ -1,30 +1,6 @@
 <?php
-    get_header();
+    get_template_part( 'templates/header' );
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Web Dev Tree</title>
-  </head>
-  <body>
-    <header>
-      <h1 class="title">🌐 🤓 🌲</h1>
-      <p class="description">Resources for learning web development</p>
-      <nav>
-        <ul class="nav-links">
-          <li class="nav-link"><a href="#">Read more</a></li>
-          <li class="nav-link"><a href="#">GitHub</a></li>
-          <li class="nav-link">
-            <a href="#">Add Link</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
-
-    <main class="container">
       <section class="section">
         <ul class="categories">
           <li class="category" id="all">
@@ -162,20 +138,5 @@
         </ul>
       </section>
       <?php
-        get_footer();
+        get_template_part('templates/footer');
       ?>
-      <footer>
-        <a
-          href="https://juanfalibene.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img
-            src="http://localhost:3000/wp-content/themes/webdevtree/images/juanfalibene_profile.svg"
-            class="img-profile"
-          />juanfalibene.com</a
-        >
-      </footer>
-    </main>
-  </body>
-</html>
