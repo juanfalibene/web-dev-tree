@@ -13,13 +13,13 @@
       <h1 class="title" rel="home"><?php bloginfo('name'); ?></a></h1>
       <p class="description"><?php bloginfo('description'); ?></p>
       <nav>
-        <ul class="nav-links">
-          <li class="nav-link"><a href="#">Read more</a></li>
-          <li class="nav-link"><a href="#">GitHub</a></li>
-          <li class="nav-link">
-            <a href="#">Add Link</a>
-          </li>
-        </ul>
+      <?php
+            wp_nav_menu([
+                'theme_location' => 'primary',
+                'container' => 'ul',
+                'menu_class' => 'nav-links',
+            ]);
+            ?>
       </nav>
     </header>
 
