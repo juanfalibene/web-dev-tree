@@ -1,5 +1,5 @@
 <?php
-    get_template_part( 'templates/header' );
+    get_header();
 ?>
       <section class="section">
         <!-- Resource Categories -->
@@ -89,5 +89,5 @@
 
       </section>
       <?php
-        get_template_part('templates/footer');
+        get_footer();
       ?>
