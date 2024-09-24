@@ -86,7 +86,7 @@ ul.nav-links {
   flex-direction: row;
 }
 
-ul.nav-links li.nav-link,
+ul.nav-links li,
 footer a {
   padding: 0.25em 0.5em;
   border-radius: 0.25em;
@@ -95,7 +95,7 @@ footer a {
   transition: all 0.3s ease-in-out;
 }
 
-ul.nav-links li.nav-link:hover,
+ul.nav-links li:hover,
 footer a:hover {
   transform: scale(1.025);
   background-color: #ffffff;
@@ -111,7 +111,8 @@ ul.categories li.category {
   cursor: pointer;
 }
 
-ul.categories li.category:hover {
+ul.categories li.category:hover,
+ul.categories li.category.active {
   background-color: #ffffff;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 }
@@ -128,22 +129,22 @@ ul.categories li.category::before {
 }
 
 ul.categories li#all.category::before {
-  background-color: #ffffff;
+  background-color: #262626;
 }
 ul.categories li#docs.category::before,
 ul.tree li.node.docs::before {
   background-color: #35d580;
 }
-ul.categories li.category#voices::before,
-ul.tree li.node.voices::before {
+ul.categories li.category#talks::before,
+ul.tree li.node.talks::before {
   background-color: #d58035;
 }
 ul.categories li.category#inspiration::before,
 ul.tree li.node.inspiration::before {
   background-color: #d2d535;
 }
-ul.categories li.category#news::before,
-ul.tree li.node.news::before {
+ul.categories li.category#articles::before,
+ul.tree li.node.articles::before {
   background-color: #359ad5;
 }
 ul.categories li.category#tools::before,
@@ -155,16 +156,15 @@ ul.tree li.node.ui::before {
   background-color: #8d35d5;
 }
 ul.categories li.category#ux::before,
-ul.tree li.node.ux::before,
-ul.tree li.node.design::before {
+ul.tree li.node.ux::before {
   background-color: #d53585;
 }
 ul.categories li.category#design::before,
 ul.tree li.node.design::before {
   background-color: #70d535;
 }
-ul.categories li.category#code::before,
-ul.tree li.node.code::before {
+ul.categories li.category#snippets::before,
+ul.tree li.node.snippets::before {
   background-color: #aad535;
 }
 ul.categories li.category#tutorials::before,
@@ -172,13 +172,22 @@ ul.tree li.node.tutorials::before {
   background-color: #d56d35;
 }
 ul.categories li.category#playlists::before,
-ul.tree li.node.playlists::before,
-ul.tree li.node.videos::before {
+ul.tree li.node.playlists::before {
   background-color: #35d2d5;
 }
 ul.categories li.category#newsletters::before,
 ul.tree li.node.newsletters::before {
   background-color: #3540d5;
+}
+
+ul.categories li.category#videos::before,
+ul.tree li.node.videos::before {
+  background-color: #a52a2a;
+}
+
+ul.categories li.category#courses::before,
+ul.tree li.node.courses::before {
+  background-color: #b8860b;
 }
 
 ul.tree {
@@ -222,11 +231,11 @@ ul.tree li.node.inspiration:hover {
   box-shadow: 0 0 10px rgba(255, 128, 0, 0.3);
   border: 1px solid #d2d535;
 }
-ul.tree li.node.voices:hover {
+ul.tree li.node.talks:hover {
   box-shadow: 0 0 10px rgba(255, 128, 0, 0.3);
   border: 1px solid #d58035;
 }
-ul.tree li.node.news:hover {
+ul.tree li.node.articles:hover {
   box-shadow: 0 0 10px rgba(0, 128, 255, 0.3);
   border: 1px solid #359ad5;
 }
@@ -246,7 +255,7 @@ ul.tree li.node.design:hover {
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
   border: 1px solid #70d535;
 }
-ul.tree li.node.code:hover {
+ul.tree li.node.snippets:hover {
   box-shadow: 0 0 10px rgba(0, 128, 128, 0.3);
   border: 1px solid #aad535;
 }
@@ -258,9 +267,17 @@ ul.tree li.node.playlists:hover {
   box-shadow: 0 0 10px rgba(128, 0, 128, 0.3);
   border: 1px solid #35d2d5;
 }
+ul.tree li.node.video:hover {
+  box-shadow: 0 0 10px rgb(165, 42, 42, 0.3);
+  border: 1px solid #a52a2a;
+}
 ul.tree li.node.newsletters:hover {
   box-shadow: 0 0 10px rgba(128, 0, 128, 0.3);
   border: 1px solid #3540d5;
+}
+ul.tree li.node.courses:hover {
+  box-shadow: 0 0 10px rgb(184, 134, 11, 0.3);
+  border: 1px solid #b8860b;
 }
 
 ul.tree li.node::before {
