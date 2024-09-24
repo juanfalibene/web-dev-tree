@@ -2,48 +2,38 @@
     get_template_part( 'templates/header' );
 ?>
       <section class="section">
+        <!-- Resource Categories -->
         <ul class="categories">
           <li class="category" id="all">
-            <a href="#">All</a>
+              <a href="#">All</a>
           </li>
-          <li class="category" id="docs">
-            <a href="#">Docs</a>
-          </li>
-          <li class="category" id="inspiration">
-            <a href="#">Inspiration</a>
-          </li>
-          <li class="category" id="voices">
-            <a href="#">Voices</a>
-          </li>
-          <li class="category" id="news">
-            <a href="#">News</a>
-          </li>
-          <li class="category" id="tools">
-            <a href="#">Tools</a>
-          </li>
-          <li class="category" id="ui">
-            <a href="#">UI</a>
-          </li>
-          <li class="category" id="ux">
-            <a href="#">UX</a>
-          </li>
-          <li class="category" id="design">
-            <a href="#">Design</a>
-          </li>
-          <li class="category" id="code">
-            <a href="#">Code</a>
-          </li>
-          <li class="category" id="playlists">
-            <a href="#">Playlists</a>
-          </li>
-          <li class="category" id="tutorials">
-            <a href="#">Tutorials</a>
-          </li>
-          <li class="category" id="newsletters">
-            <a href="#">Newsletters</a>
-          </li>
+
+          <?php
+          // Get resources categories
+          $args = [
+            'taxonomy' => 'category_resource', // Custom Post Taxnomy Reference
+            'type'=> 'resource',
+            'hide_empty'=> 'true',
+          ];
+
+          $categories = get_categories( $args );
+
+          foreach ( $categories as $category ) :
+            $cat_name = $category->name;
+            $cat_slug = $category->slug;
+            $cat_id = $category->term_id;
+
+            echo '<li class="category" id="' . esc_attr( $cat_slug) . '">';
+            echo '<a href="#">'. esc_html( $cat_name ) .'</a>';
+            echo '</li>';
+
+            endforeach;
+          ?>
+
         </ul>
 
+
+        <!-- Resources Post Tree -->
         <ul class="tree">
           <li class="node docs active">
             <a href="html/index.html" rel="noopener noreferrer" target="_blank"
