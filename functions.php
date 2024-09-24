@@ -39,4 +39,8 @@ function webdevtree_body_class( $classes ) {
 // Add specific CSS class by filter
 add_filter('body_class', 'webdevtree_body_class','');
 
+
 require_once 'inc/menus.php';
+require_once 'inc/custom_post_type.php';
+require_once 'inc/custom_post_field.php';
+
