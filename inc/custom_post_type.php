@@ -22,7 +22,7 @@ function webdevtree_register_post_type() {
         'labels'                => $labels,
         'public'                => true,
         'has_archive'           => true,
-        'supports'              => ['title', 'editor', 'custom-fields'],
+        'supports'              => ['title', 'editor', 'custom-fields', 'excerpt'],
         'rewrite'               => ['slug' => 'resources'],
         'menu_icon'             => 'dashicons-book',
         'show_in_rest'          => true, // Para Gutenberg
