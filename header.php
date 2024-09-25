@@ -9,18 +9,21 @@
 </head>
 
 <body <?php body_class(); ?>>
-    <header>
-      <h1 class="title" rel="home"><?php bloginfo('name'); ?></a></h1>
-      <p class="description"><?php bloginfo('description'); ?></p>
-      <nav>
-      <?php
+    <header class="main-header">
+        <a href="<?php echo esc_url(home_url('/')); ?>" class="logo">
+            <h1 class="title" rel="home">
+                <?php bloginfo('name'); ?>
+        </a></h1>
+        <p class="description"><?php bloginfo('description'); ?></p>
+        <nav class="main-nav">
+            <?php
             wp_nav_menu([
                 'theme_location' => 'main-menu',
                 'container' => 'ul',
                 'menu_class' => 'nav-links',
             ]);
             ?>
-      </nav>
+        </nav>
     </header>
 
-    <main class="container"></main>
+    <main class="main-container"></main>
