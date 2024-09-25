@@ -24,8 +24,8 @@ function webdevtree_register_post_type() {
         'has_archive'           => true,
         'supports'              => ['title', 'editor', 'custom-fields', 'excerpt'],
         'rewrite'               => ['slug' => 'resources'],
-        'menu_icon'             => 'dashicons-book',
-        'show_in_rest'          => true, // Para Gutenberg
+        'menu_icon'             => 'dashicons-admin-links',
+        'show_in_rest'          => true, // For Gutenberg
     ];
 
     register_post_type('resource', $args);
