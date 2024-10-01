@@ -44,3 +44,20 @@ function webdevtree_register_taxonomy() {
     ]);
 }
 add_action('init', 'webdevtree_register_taxonomy');
+
+// Limit the number of categories for the Custom Post Type 'resources' to 25
+function limit_categories_for_resources($term, $taxonomy) {
+    if ($taxonomy === 'category_resource') { // Change this to the name of your Custom Post Type
+        $existing_terms = get_terms([
+            'taxonomy' => 'category_resource',
+            'hide_empty' => false, // Include empty categories
+        ]);
+
+        if (count($existing_terms) >= 25) {
+            // If there are already 25 categories, return an error
+            return new WP_Error('term_limit_exceeded', __('Don\'t create more than 25 categories :) Please delete some categories (only for tutorial purposes).', 'web-dev-tree'));
+        }
+    }
+    return $term; // Return the term unchanged
+}
+add_filter('pre_insert_term', 'limit_categories_for_resources', 10, 2);
