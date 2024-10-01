@@ -70,24 +70,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Assign root colors to categories and nodes
   function assignDynamicStyles() {
-    const categories = document.querySelectorAll('[class*="cat-"]'); // Selecciona todos los elementos con la clase "cat-"
-    const root = document.documentElement; // Referencia a :root para acceder a las variables CSS
+    const categories = document.querySelectorAll('[class*="cat-"]'); // Select all classes that start with "cat-"
+    const root = document.documentElement; // Root element
 
-    // Crear un nuevo elemento de estilo
+    // Create a style element
     const style = document.createElement("style");
     document.head.appendChild(style);
 
-    // Obtener el objeto de la hoja de estilos
+    // Obtain the sheet of styles
     const styleSheet = style.sheet;
 
-    // Almacena las clases que tienen el formato "cat-X"
+    // Save the root colors
     const catClasses = [];
 
     categories.forEach((category) => {
-      // Filtra las clases que sigan el patrón "cat-X"
+      // Filter the classes to get only the ones that start with "cat-"
       category.classList.forEach((cls) => {
         if (cls.startsWith("cat-")) {
-          const catNumber = parseInt(cls.replace("cat-", ""), 10); // Extrae el número de la clase
+          const catNumber = parseInt(cls.replace("cat-", ""), 10); // Extract the number from the class
           if (!isNaN(catNumber)) {
             catClasses.push(catNumber);
           }
@@ -95,20 +95,44 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-    // Ordena las clases por número
+    // Order the classes in ascending order
     catClasses.sort((a, b) => a - b);
 
-    // Asigna las variables CSS a las clases correspondientes
+    // Check for missing classes and reuse existing ones
+    const maxClassNum = Math.max(...catClasses); // Find the maximum class number
+    for (let i = 1; i <= maxClassNum; i++) {
+      const classToCheck = `cat-${i}`;
+
+      // Check if the class does not exist
+      if (!catClasses.includes(i)) {
+        // Find the closest existing class to reuse
+        const closestClass = catClasses.reverse().find((cls) => cls < i);
+
+        if (closestClass) {
+          const categoryToAssign = document.querySelector(
+            `.categories .category.cat-${closestClass}`
+          );
+          if (categoryToAssign) {
+            categoryToAssign.classList.add(classToCheck);
+            console.log(
+              `Reutilizando cat-${closestClass} para ${classToCheck}`
+            );
+          }
+        }
+      }
+    }
+
+    // Assign the root colors
     catClasses.forEach((catNumber, index) => {
-      // Aquí se hace la asignación de las variables de color según el orden encontrado
+      // Assign the root colors to the categories by using the index
       const className = `.cat-${catNumber}`;
 
-      // Crea reglas CSS individuales para categorías
+      // Create the before rule
       const beforeRule = `${className}::before { background-color: var(--cat-${
         index + 1
       }-bg); }`;
 
-      // Inserta la regla de fondo
+      // Insert the before rule
       styleSheet.insertRule(beforeRule, styleSheet.cssRules.length);
     });
   }
