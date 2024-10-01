@@ -21,9 +21,12 @@
             $cat_id = $category->term_id;
 
             // Categories List
-            echo '<li class="category" id="' . esc_attr($cat_slug) . '">';
-            echo '<a href="#">' . esc_html($cat_name) . '</a>';
-            echo '</li>';
+            ?>
+            <li class="category cat-<?php echo esc_attr($cat_id) ?>" id="<?php esc_attr($cat_slug) ?>">
+            <a href="#"><?php echo esc_html($cat_name) ?></a>
+            </li>
+
+            <?php
 
             // Resource Post Elements
             $query_args = [
@@ -49,6 +52,7 @@
         
         foreach ($categories as $category):
             $cat_slug = $category->slug;
+            $cat_id = $category->term_id;
 
             $query_args = [
                 'post_type' => 'resource',
@@ -71,11 +75,14 @@
                     $external_link = get_post_meta(get_the_ID(), '_external_link', true);
 
                     // Print Resource Node
-                    echo '<li class="node ' . esc_attr($cat_slug) . '">';
-                    echo '<a href="' . esc_url($external_link) . '" rel="noopener noreferrer" target="_blank">';
-                    echo get_the_title() . '<span>' . get_the_excerpt() . '</span>';
-                    echo '</a>';
-                    echo '</li>';
+                    ?>
+                    <li class="node <?php echo esc_attr($cat_slug) . ' cat-' . esc_attr($cat_id) ?>">
+                    <a href="<?php echo esc_url($external_link) ?>" rel="noopener noreferrer" target="_blank">
+                    <?php get_the_title() ?><span><?php get_the_excerpt() ?></span>
+                    </a>
+                    </li>
+
+                    <?php
 
                 endwhile;
 
