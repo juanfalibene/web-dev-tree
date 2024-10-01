@@ -1,5 +1,5 @@
 <section class="blog-section">
-    <div class="blog-post-list">
+    <div class="blog-post-list loop">
         <?php
         if (have_posts()):
             while (have_posts()):
