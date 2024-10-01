@@ -405,7 +405,7 @@ section.widget_archive ul.wp-block-archives-list li {
   border-radius: 0.25em;
   opacity: 0.8;
   scale: 1;
-  margin: 0.5em 0.25;
+  margin: 0.5em 0.25em;
   transition: all 0.3s ease;
 }
 
@@ -416,7 +416,8 @@ section.widget_archive ul.wp-block-archives-list li::marker {
 article.post-card p.post-categories:hover,
 article.post-card ul.post-tags li a:hover,
 section.widget_categories ul.wp-block-categories-list li:hover,
-section.widget_tag_cloud p a:hover {
+section.widget_tag_cloud p a:hover,
+section.widget_archive ul.wp-block-archives-list li:hover {
   opacity: 1;
   scale: 1.05;
 }
