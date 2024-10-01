@@ -324,7 +324,7 @@ section.tree-list ul.tree li.node::before {
   height: 1em;
   border-radius: 50%;
   margin-right: 0.5em;
-  display: inline-block;
+  display: inline-flex;
   transition: all 0.3s ease-in-out;
 }
 
@@ -347,8 +347,9 @@ section.tree-list ul.tree li.node:hover::before {
 }
 
 section.tree-list ul.tree li.node span {
-  display: inline-block;
+  display: inline-flex;
   margin-left: 0.25em;
+  vertical-align: middle;
   color: #242424db;
   font-weight: 300;
 }
@@ -356,7 +357,10 @@ section.tree-list ul.tree li.node span {
 section.tree-list ul.tree li.node span::before {
   content: "—";
   margin-right: 0.5em;
+  margin-left: 0.25em;
+  margin-top: -2px;
   font-size: 1.2em;
+  line-height: 1;
   font-weight: 300;
   color: #242424;
 }
