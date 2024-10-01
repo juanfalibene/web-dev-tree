@@ -1,9 +1,7 @@
 <section class="single-post">
     <article class="single-post-content">
-        <?php
-        echo 'IS SINGLE POST';
-        echo '<h2>' . get_the_title() . '</h2>';
-        echo '<p>' . the_content() . '</p>';
-        ?>
+        <h2><?php echo get_the_title(); ?></h2>
+        <p><?php echo the_content(); ?></p>
+        <?php get_template_part('template-parts/pagination'); ?>
     </article>
 </section>
