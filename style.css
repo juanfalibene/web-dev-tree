@@ -16,6 +16,105 @@ Text Domain: web-dev-tree
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+:root {
+  --cat-all: #272727;
+  --cat-1-bg: #35d580;
+  --cat-1-box: 0 0 10px rgba(53, 213, 128, 0.3);
+  --cat-1-border: 1px solid #35d580;
+
+  --cat-2-bg: #d58035;
+  --cat-2-box: 0 0 10px rgba(213, 128, 53, 0.3);
+  --cat-2-border: 1px solid #d58035;
+
+  --cat-3-bg: #d2d535;
+  --cat-3-box: 0 0 10px rgba(255, 128, 0, 0.3);
+  --cat-3-border: 1px solid #d2d535;
+
+  --cat-4-bg: #359ad5;
+  --cat-4-box: 0 0 10px rgba(0, 128, 255, 0.3);
+  --cat-4-border: 1px solid #359ad5;
+
+  --cat-5-bg: #d53535;
+  --cat-5-box: 0 0 10px rgba(255, 0, 0, 0.3);
+  --cat-5-border: 1px solid #d53535;
+
+  --cat-6-bg: #8d35d5;
+  --cat-6-box: 0 0 10px rgba(255, 0, 255, 0.3);
+  --cat-6-border: 1px solid #8d35d5;
+
+  --cat-7-bg: #d53585;
+  --cat-7-box: 0 0 10px rgba(255, 0, 128, 0.3);
+  --cat-7-border: 1px solid #d53585;
+
+  --cat-8-bg: #70d535;
+  --cat-8-box: 0 0 10px rgba(0, 255, 255, 0.3);
+  --cat-8-border: 1px solid #70d535;
+
+  --cat-9-bg: #aad535;
+  --cat-9-box: 0 0 10px rgba(0, 128, 128, 0.3);
+  --cat-9-border: 1px solid #aad535;
+
+  --cat-10-bg: #d56d35;
+  --cat-10-box: 0 0 10px rgba(128, 0, 0, 0.3);
+  --cat-10-border: 1px solid #d56d35;
+
+  --cat-11-bg: #35d2d5;
+  --cat-11-box: 0 0 10px rgba(128, 0, 128, 0.3);
+  --cat-11-border: 1px solid #35d2d5;
+
+  --cat-12-bg: #3540d5;
+  --cat-12-box: 0 0 10px rgba(128, 0, 128, 0.3);
+  --cat-12-border: 1px solid #3540d5;
+
+  --cat-13-bg: #a52a2a;
+  --cat-13-box: 0 0 10px rgba(165, 42, 42, 0.3);
+  --cat-13-border: 1px solid #a52a2a;
+
+  --cat-14-bg: #b8860b;
+  --cat-14-box: 0 0 10px rgba(184, 134, 11, 0.3);
+  --cat-14-border: 1px solid #b8860b;
+
+  --cat-15-bg: #ff5733;
+  --cat-15-box: 0 0 10px rgba(255, 87, 51, 0.3);
+  --cat-15-border: 1px solid #ff5733;
+
+  --cat-16-bg: #33ff57;
+  --cat-16-box: 0 0 10px rgba(51, 255, 87, 0.3);
+  --cat-16-border: 1px solid #33ff57;
+
+  --cat-17-bg: #3357ff;
+  --cat-17-box: 0 0 10px rgba(51, 87, 255, 0.3);
+  --cat-17-border: 1px solid #3357ff;
+
+  --cat-18-bg: #ff33a1;
+  --cat-18-box: 0 0 10px rgba(255, 51, 161, 0.3);
+  --cat-18-border: 1px solid #ff33a1;
+
+  --cat-19-bg: #f5b7b1;
+  --cat-19-box: 0 0 10px rgba(245, 183, 177, 0.3);
+  --cat-19-border: 1px solid #f5b7b1;
+
+  --cat-20-bg: #f9e79f;
+  --cat-20-box: 0 0 10px rgba(249, 231, 159, 0.3);
+  --cat-20-border: 1px solid #f9e79f;
+
+  --cat-21-bg: #a2d9ce;
+  --cat-21-box: 0 0 10px rgba(162, 217, 206, 0.3);
+  --cat-21-border: 1px solid #a2d9ce;
+
+  --cat-22-bg: #d7bde2;
+  --cat-22-box: 0 0 10px rgba(215, 189, 226, 0.3);
+  --cat-22-border: 1px solid #d7bde2;
+
+  --cat-23-bg: #ffcccb;
+  --cat-23-box: 0 0 10px rgba(255, 204, 203, 0.3);
+  --cat-23-border: 1px solid #ffcccb;
+
+  --cat-24-bg: #c4e17f;
+  --cat-24-box: 0 0 10px rgba(196, 225, 127, 0.3);
+  --cat-24-border: 1px solid #c4e17f;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -168,69 +267,8 @@ section.tree-list ul.categories li.category::before {
   transition: all 0.3s ease-in-out;
 }
 
-section.tree-list ul.categories li#all.category::before {
-  background-color: #262626;
-}
-section.tree-list ul.categories li#docs.category::before,
-section.tree-list ul.tree li.node.docs::before {
-  background-color: #35d580;
-}
-section.tree-list ul.categories li.category#talks::before,
-ul.tree li.node.talks::before {
-  background-color: #d58035;
-}
-section.tree-list ul.categories li.category#inspiration::before,
-ul.tree li.node.inspiration::before {
-  background-color: #d2d535;
-}
-ul.categories li.category#articles::before,
-ul.tree li.node.articles::before {
-  background-color: #359ad5;
-}
-section.tree-list ul.categories li.category#tools::before,
-section.tree-list ul.tree li.node.tools::before {
-  background-color: #d53535;
-}
-section.tree-list ul.categories li.category#ui::before,
-section.tree-list ul.tree li.node.ui::before {
-  background-color: #8d35d5;
-}
-ul.categories li.category#ux::before,
-ul.tree li.node.ux::before {
-  background-color: #d53585;
-}
-section.tree-list ul.categories li.category#design::before,
-section.tree-list ul.tree li.node.design::before {
-  background-color: #70d535;
-}
-section.tree-list ul.categories li.category#snippets::before,
-section.tree-list ul.tree li.node.snippets::before {
-  background-color: #aad535;
-}
-section.tree-list ul.categories li.category#tutorials::before,
-section.tree-list ul.tree li.node.tutorials::before {
-  background-color: #d56d35;
-}
-ul.categories li.category#playlists::before,
-ul.tree li.node.playlists::before {
-  background-color: #35d2d5;
-}
-section.tree-list
-  section.tree-list
-  ul.categories
-  li.category#newsletters::before,
-section.tree-list section.tree-list ul.tree li.node.newsletters::before {
-  background-color: #3540d5;
-}
-
-section.tree-list ul.categories li.category#videos::before,
-section.tree-list ul.tree li.node.videos::before {
-  background-color: #a52a2a;
-}
-
-section.tree-list ul.categories li.category#courses::before,
-section.tree-list ul.tree li.node.courses::before {
-  background-color: #b8860b;
+section.tree-list ul.categories li:nth-child(1)::before {
+  background-color: var(--cat-all);
 }
 
 section.tree-list ul.tree li.node {
@@ -254,67 +292,6 @@ section.tree-list ul.tree li.node {
   border: 1px solid #f1f1f1;
   transition: all 0.3s ease-in-out;
   position: relative;
-}
-
-section.tree-list ul.tree li.node:hover {
-  background-color: #ffffff;
-}
-
-section.tree-list ul.tree li.node.docs:hover {
-  box-shadow: 0 0 10px rgba(0, 255, 128, 0.3);
-  border: 1px solid #35d580;
-}
-section.tree-list ul.tree li.node.inspiration:hover {
-  box-shadow: 0 0 10px rgba(255, 128, 0, 0.3);
-  border: 1px solid #d2d535;
-}
-section.tree-list ul.tree li.node.talks:hover {
-  box-shadow: 0 0 10px rgba(255, 128, 0, 0.3);
-  border: 1px solid #d58035;
-}
-section.tree-list ul.tree li.node.articles:hover {
-  box-shadow: 0 0 10px rgba(0, 128, 255, 0.3);
-  border: 1px solid #359ad5;
-}
-section.tree-list ul.tree li.node.tools:hover {
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
-  border: 1px solid #d53535;
-}
-section.tree-list ul.tree li.node.ui:hover {
-  box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
-  border: 1px solid #8d35d5;
-}
-section.tree-list ul.tree li.node.ux:hover {
-  box-shadow: 0 0 10px rgba(255, 0, 128, 0.3);
-  border: 1px solid #d53585;
-}
-section.tree-list ul.tree li.node.design:hover {
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
-  border: 1px solid #70d535;
-}
-section.tree-list ul.tree li.node.snippets:hover {
-  box-shadow: 0 0 10px rgba(0, 128, 128, 0.3);
-  border: 1px solid #aad535;
-}
-section.tree-list ul.tree li.node.tutorials:hover {
-  box-shadow: 0 0 10px rgba(128, 0, 0, 0.3);
-  border: 1px solid #d56d35;
-}
-section.tree-list ul.tree li.node.playlists:hover {
-  box-shadow: 0 0 10px rgba(128, 0, 128, 0.3);
-  border: 1px solid #35d2d5;
-}
-section.tree-list ul.tree li.node.video:hover {
-  box-shadow: 0 0 10px rgb(165, 42, 42, 0.3);
-  border: 1px solid #a52a2a;
-}
-section.tree-list ul.tree li.node.newsletters:hover {
-  box-shadow: 0 0 10px rgba(128, 0, 128, 0.3);
-  border: 1px solid #3540d5;
-}
-section.tree-list ul.tree li.node.courses:hover {
-  box-shadow: 0 0 10px rgb(184, 134, 11, 0.3);
-  border: 1px solid #b8860b;
 }
 
 section.tree-list ul.tree li.node::before {
