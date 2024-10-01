@@ -22,7 +22,7 @@
 
             // Categories List
             ?>
-            <li class="category cat-<?php echo esc_attr($cat_id) ?>" id="<?php esc_attr($cat_slug) ?>">
+            <li class="category cat-<?php echo esc_attr($cat_id) ?>" id="<?php echo esc_attr($cat_slug) ?>">
             <a href="#"><?php echo esc_html($cat_name) ?></a>
             </li>
 
@@ -76,9 +76,9 @@
 
                     // Print Resource Node
                     ?>
-                    <li class="node <?php echo esc_attr($cat_slug) . ' cat-' . esc_attr($cat_id) ?>">
+                    <li class="node <?php echo esc_attr($cat_slug) ?> cat-<?php echo esc_attr($cat_id) ?>">
                     <a href="<?php echo esc_url($external_link) ?>" rel="noopener noreferrer" target="_blank">
-                    <?php get_the_title() ?><span><?php get_the_excerpt() ?></span>
+                    <?php the_title() ?><span><?php the_excerpt() ?></span>
                     </a>
                     </li>
 
