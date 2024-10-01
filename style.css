@@ -223,6 +223,12 @@ section.tree-list ul.tree li.node {
   position: relative;
 }
 
+section.tree-list ul.tree li.node:hover {
+  background-color: #ffffff;
+  border: 1px solid #f1f1f1;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
 section.tree-list ul.tree li.node::before {
   content: "";
   opacity: 0.75;
