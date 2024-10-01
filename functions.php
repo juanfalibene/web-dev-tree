@@ -79,4 +79,5 @@ add_action('widgets_init', 'webdevtree_setup_widgets');
 require_once 'inc/menus.php';
 require_once 'inc/custom_post_type.php';
 require_once 'inc/custom_post_field.php';
+require_once 'inc/customizer.php';
 
