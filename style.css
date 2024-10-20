@@ -538,3 +538,61 @@ footer a:hover img.img-profile {
   margin-right: 1em;
   box-shadow: 0px 0px 10px rgba(231, 243, 10, 1);
 }
+
+@media screen and (max-width: 768px) {
+  body.webdevtree {
+    padding: 0.5rem;
+  }
+  section.main-section,
+  section.tree-list,
+  section.blog-section {
+    border: none;
+  }
+  header.main-header,
+  main.main-container,
+  footer.main-footer,
+  section.main-section,
+  section.tree-list,
+  section.page-section,
+  section.blog-section,
+  section.single-post {
+    padding: 0.5rem;
+  }
+  section.tree-list ul.tree li.node {
+    box-shadow: none;
+    border: 1px solid #24242430;
+    width: 95vw;
+    min-width: 95vw;
+    max-width: 95vw;
+    padding: 1em 0.5em;
+    text-align: left;
+  }
+  section.tree-list ul.tree li.node::before {
+    width: 1em;
+    height: 0.75em;
+    max-width: 0.75em;
+    max-height: 0.75em;
+  }
+  section.tree-list ul.tree li.node span::before {
+    display: none;
+  }
+  section.tree-list ul.tree li.node span {
+    text-align: left;
+  }
+  section.blog-section {
+    flex-direction: column;
+  }
+  section.blog-section div.blog-post-list,
+  section.blog-section sidebar.blog-post-sidebar {
+    width: 100%;
+  }
+  article.post-card {
+    padding: 0.25em;
+  }
+  section.blog-section div.blog-post-list.loop {
+    border-right: none;
+  }
+  section.blog-section div.blog-post-list.archive {
+    border-left: none;
+  }
+}
