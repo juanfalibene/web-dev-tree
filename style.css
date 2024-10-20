@@ -42,6 +42,30 @@ Text Domain: web-dev-tree
   --cat-22-bg: #d7bde2;
   --cat-23-bg: #ffcccb;
   --cat-24-bg: #c4e17f;
+  --cat-25-bg: var(--cat-1-bg);
+  --cat-26-bg: var(--cat-2-bg);
+  --cat-27-bg: var(--cat-3-bg);
+  --cat-28-bg: var(--cat-4-bg);
+  --cat-29-bg: var(--cat-5-bg);
+  --cat-30-bg: var(--cat-6-bg);
+  --cat-31-bg: var(--cat-7-bg);
+  --cat-32-bg: var(--cat-8-bg);
+  --cat-33-bg: var(--cat-9-bg);
+  --cat-34-bg: var(--cat-10-bg);
+  --cat-35-bg: var(--cat-11-bg);
+  --cat-36-bg: var(--cat-12-bg);
+  --cat-37-bg: var(--cat-13-bg);
+  --cat-38-bg: var(--cat-14-bg);
+  --cat-39-bg: var(--cat-15-bg);
+  --cat-40-bg: var(--cat-16-bg);
+  --cat-41-bg: var(--cat-17-bg);
+  --cat-42-bg: var(--cat-18-bg);
+  --cat-43-bg: var(--cat-19-bg);
+  --cat-44-bg: var(--cat-20-bg);
+  --cat-45-bg: var(--cat-21-bg);
+  --cat-46-bg: var(--cat-22-bg);
+  --cat-47-bg: var(--cat-23-bg);
+  --cat-48-bg: var(--cat-24-bg);
 }
 
 html {
