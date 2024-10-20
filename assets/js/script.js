@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Select all nodes
   const nodes = document.querySelectorAll(".tree li.node");
 
   // Function to apply filters
-  function apllyFilters(category) {
+  function applyFilters(category) {
     nodes.forEach((node) => {
       if (category === "all") {
         node.classList.add("active");
@@ -17,13 +16,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  apllyFilters("all");
+  applyFilters("all");
 
-  // Add event listener to all categories
+  // Event listener for category filters
   const categories = document.querySelectorAll(".categories .category");
 
   categories.forEach((category) => {
-    // mouseenter and mouseleave events to highlight categories
+    // mouseenter and mouseleave events for highlighting
     category.addEventListener("mouseenter", () => {
       categories.forEach((item) => {
         if (item !== category) {
@@ -31,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
     });
+
     category.addEventListener("mouseleave", () => {
       categories.forEach((item) => {
         if (item !== category) {
@@ -39,102 +39,79 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-    // click event on category
+    // click event for category filtering
     category.addEventListener("click", () => {
-      // Select the selected category
       const selectedCategoryId = category.id;
 
-      // If the category is already active, remove the active class
       if (category.classList.contains("active")) {
-        apllyFilters("all"); // Reset the filters
+        applyFilters("all");
       } else {
-        // If the category is not active, apply the active class
-        categories.forEach((item) => {
-          item.classList.remove("active"); // Remove the active class, only if the category is not active
-        });
-
-        // Add the active class
+        categories.forEach((item) => item.classList.remove("active"));
         category.classList.add("active");
-        // Apply the filters
-        apllyFilters(selectedCategoryId);
+        applyFilters(selectedCategoryId);
 
-        // Scroll to the selected category
         const selectedCategory = document.getElementById(selectedCategoryId);
         selectedCategory.scrollIntoView({ behavior: "smooth" });
-
-        // Scroll to the top
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     });
   });
 
-  // Assign root colors to categories and nodes
+  // Assign colors to categories and nodes dynamically
   function assignDynamicStyles() {
-    const categories = document.querySelectorAll('[class*="cat-"]'); // Select all classes that start with "cat-"
-    const root = document.documentElement; // Root element
-
-    // Create a style element
+    const categories = document.querySelectorAll('[class*="cat-"]');
+    const root = document.documentElement;
     const style = document.createElement("style");
     document.head.appendChild(style);
-
-    // Obtain the sheet of styles
     const styleSheet = style.sheet;
 
-    // Save the root colors
-    const catClasses = [];
+    // Save all "cat-" class numbers
+    const catClasses = new Set();
 
     categories.forEach((category) => {
-      // Filter the classes to get only the ones that start with "cat-"
       category.classList.forEach((cls) => {
         if (cls.startsWith("cat-")) {
-          const catNumber = parseInt(cls.replace("cat-", ""), 10); // Extract the number from the class
+          const catNumber = parseInt(cls.replace("cat-", ""), 10);
           if (!isNaN(catNumber)) {
-            catClasses.push(catNumber);
+            catClasses.add(catNumber);
           }
         }
       });
     });
 
-    // Order the classes in ascending order
-    catClasses.sort((a, b) => a - b);
+    // Convert to array and sort the classes
+    const sortedCatClasses = Array.from(catClasses).sort((a, b) => a - b);
 
-    // Check for missing classes and reuse existing ones
-    const maxClassNum = Math.max(...catClasses); // Find the maximum class number
+    // Assign colors and fill missing categories
+    sortedCatClasses.forEach((catNumber, index) => {
+      const className = `.cat-${catNumber}`;
+      const beforeRule = `${className}::before { background-color: var(--cat-${
+        (index % 24) + 1 // Cycle through the first 24 colors
+      }-bg); }`;
+
+      styleSheet.insertRule(beforeRule, styleSheet.cssRules.length);
+    });
+
+    // Fill missing classes by reusing closest colors
+    const maxClassNum = Math.max(...sortedCatClasses);
     for (let i = 1; i <= maxClassNum; i++) {
-      const classToCheck = `cat-${i}`;
-
-      // Check if the class does not exist
-      if (!catClasses.includes(i)) {
-        // Find the closest existing class to reuse
-        const closestClass = catClasses.reverse().find((cls) => cls < i);
+      if (!catClasses.has(i)) {
+        const closestClass = sortedCatClasses
+          .slice()
+          .reverse()
+          .find((cls) => cls < i);
 
         if (closestClass) {
           const categoryToAssign = document.querySelector(
             `.categories .category.cat-${closestClass}`
           );
           if (categoryToAssign) {
-            categoryToAssign.classList.add(classToCheck);
-            console.log(
-              `Reutilizando cat-${closestClass} para ${classToCheck}`
-            );
+            categoryToAssign.classList.add(`cat-${i}`);
+            console.log(`Reutilizando cat-${closestClass} para cat-${i}`);
           }
         }
       }
     }
-
-    // Assign the root colors
-    catClasses.forEach((catNumber, index) => {
-      // Assign the root colors to the categories by using the index
-      const className = `.cat-${catNumber}`;
-
-      // Create the before rule
-      const beforeRule = `${className}::before { background-color: var(--cat-${
-        index + 1
-      }-bg); }`;
-
-      // Insert the before rule
-      styleSheet.insertRule(beforeRule, styleSheet.cssRules.length);
-    });
   }
 
   assignDynamicStyles();
