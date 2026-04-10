@@ -90,7 +90,7 @@ def main():
         "title": data["title"],
         "content": f"<p>{data['content_text']}</p>\n<p><a href=\"{data['link']}\" target=\"_blank\">Ver recurso original &rarr;</a></p>",
         "status": "publish",
-        # Default WP post category fallback, puedes agregar "categories": [ID] si sabes el ID exacto.
+        "categories": [3, 4, 5, 13, 6, 7, 11, 12, 9, 10]
     }
 
     print("Enviando POST a WordPress REST API...")
