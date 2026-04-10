@@ -88,9 +88,12 @@ def main():
     wp_auth = (wp_user, wp_pass)
     wp_data = {
         "title": data["title"],
-        "content": f"<p>{data['content_text']}</p>\n<p><a href=\"{data['link']}\" target=\"_blank\">Ver recurso original &rarr;</a></p>",
+        "excerpt": data["content_text"],
         "status": "publish",
-        "categories": [3, 4, 5, 13, 6, 7, 11, 12, 9, 10]
+        "categories": [3, 4, 5, 13, 6, 7, 11, 12, 9, 10],
+        "acf": {
+            "external_link": data["link"]
+        }
     }
 
     print("Enviando POST a WordPress REST API...")
