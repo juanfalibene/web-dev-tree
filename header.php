@@ -16,6 +16,7 @@
         </a></h1>
         <p class="description"><?php bloginfo('description'); ?></p>
         <nav class="main-nav">
+            <button class="mobile-menu-toggle">Menu</button>
             <?php
             wp_nav_menu([
                 'theme_location' => 'main-menu',

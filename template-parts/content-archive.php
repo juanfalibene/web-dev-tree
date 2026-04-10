@@ -1,6 +1,33 @@
 <section class="blog-section">
     <sidebar class="blog-post-sidebar">
         <?php
+        if (is_author()) {
+            $author = get_queried_object();
+            $author_name = $author->display_name;
+            $author_desc = get_the_author_meta('description', $author->ID);
+            $author_avatar = get_avatar($author->ID, 80);
+            $post_count = count_user_posts($author->ID, 'post');
+            $author_weblink = get_the_author_meta('user_url', $author->ID);
+
+            echo '<div class="widget widget_author_list">';
+            echo '<ul class="author-list">';
+            echo '<li class="author-item">';
+            echo '<div class="author-avatar">' . $author_avatar . '</div>';
+            echo '<div class="author-details">';
+            echo '<h4 class="author-name">' . esc_html($author_name) . '</h4>';
+            echo '<p class="author-post-count">' . $post_count . ' latest posts</p>';
+            if ($author_desc) {
+                echo '<p class="author-bio">' . esc_html($author_desc) . '</p>';
+            }
+            if ($author_weblink) {
+                echo '<a href="' . esc_url($author_weblink) . '" class="author-weblink">' . esc_html($author_weblink) . '</a>';
+            }
+            echo '</div>';
+            echo '</li>';
+            echo '</ul>';
+            echo '</div>';
+        }
+
         if (is_active_sidebar('archive-sidebar')):
             dynamic_sidebar('archive-sidebar');
         endif;
