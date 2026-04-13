@@ -14,6 +14,19 @@ function webdevtree_add_meta_box() {
 
 add_action('add_meta_boxes', 'webdevtree_add_meta_box');
 
+// Expose meta field to REST API
+function webdevtree_register_meta() {
+    register_post_meta('resource', '_external_link', array(
+        'show_in_rest'  => true,
+        'single'        => true,
+        'type'          => 'string',
+        'auth_callback' => function() {
+            return current_user_can('edit_posts');
+        }
+    ));
+}
+add_action('init', 'webdevtree_register_meta');
+
 // Render Custom Post Field
 function webdevtree_render_meta_box( $post ) {
     $external_link = get_post_meta($post->ID, '_external_link', true);

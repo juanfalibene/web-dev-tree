@@ -42,6 +42,20 @@ def main():
     # Preparar Prompt para Gemini
     client = genai.Client(api_key=gemini_key)
 
+    # Categorías disponibles en WordPress
+    categories_map = {
+        "inspiration": 3,
+        "tools": 4,
+        "courses": 5,
+        "voices": 13,
+        "tutorials": 6,
+        "docs": 7,
+        "code": 11,
+        "blogs": 12,
+        "articles": 9,
+        "design": 10
+    }
+
     prompt = f"""
     Eres un curador experto en desarrollo web y diseño UX/UI. 
     Tu objetivo es leer los siguientes artículos/recursos recientes de '{target_feed['name']}' y elegir SOLO UNO que sea el más relevante y útil (por ejemplo: recursos de diseño, CSS avanzado, herramientas de programación {', idealmente Developer Tools' if target_feed['name'] == 'Product Hunt' else ''}).
@@ -52,7 +66,8 @@ def main():
     {{
         "title": "Un título corto y atractivo para el post en mi blog (español o inglés, usa tu criterio)",
         "content_text": "Una breve descripción de máximo 10 o 15 palabras que incite a visitar el recurso.",
-        "link": "El enlace original exacto del ítem seleccionado"
+        "link": "El enlace original exacto del ítem seleccionado",
+        "category": "UNA sola categoría de esta lista: {', '.join(categories_map.keys())}"
     }}
 
     Listado de Ítems:
@@ -84,7 +99,10 @@ def main():
         print(output)
         sys.exit(1)
 
-    print(f"Recurso seleccionado: {data.get('title')}")
+    # Resolver categoría
+    selected_cat = data.get("category", "").lower().strip()
+    cat_id = categories_map.get(selected_cat, 9)  # Default: articles
+    print(f"Recurso seleccionado: {data.get('title')} | Categoría: {selected_cat} (ID {cat_id})")
 
     # Publicar en WordPress
     wp_auth = (wp_user, wp_pass)
@@ -92,9 +110,9 @@ def main():
         "title": data["title"],
         "excerpt": data["content_text"],
         "status": "publish",
-        "categories": [3, 4, 5, 13, 6, 7, 11, 12, 9, 10],
-        "acf": {
-            "external_link": data["link"]
+        "category_resource": [cat_id],
+        "meta": {
+            "_external_link": data["link"]
         }
     }
 
@@ -103,6 +121,7 @@ def main():
 
     if res.status_code in [200, 201]:
         print("Post publicado exitosamente!")
+        print(f"Link: {data['link']}")
     else:
         print(f"Falló la publicación en WP: HTTP {res.status_code}")
         print(res.text)
