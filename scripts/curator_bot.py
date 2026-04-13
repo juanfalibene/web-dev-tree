@@ -64,10 +64,18 @@ def main():
 
     Si encuentras un buen recurso, debes redactar la respuesta EXACTAMENTE en formato JSON plano (sin marcadores de bloque de código como ```json). El JSON debe contener:
     {{
-        "title": "Un título corto y atractivo para el post en mi blog (español o inglés, usa tu criterio)",
-        "content_text": "Una breve descripción de máximo 10 o 15 palabras que incite a visitar el recurso.",
+        "title": "Título corto y conciso (MÁXIMO 40 caracteres)",
+        "content_text": "Descripción breve y atractiva (MÁXIMO 70 caracteres)",
         "link": "El enlace original exacto del ítem seleccionado",
         "category": "UNA sola categoría de esta lista: {', '.join(categories_map.keys())}"
+    }}
+
+    EJEMPLO de formato correcto:
+    {{
+        "title": "CSS & HTML Buttons",
+        "content_text": "Botones personalizables hechos con puro CSS y HTML, fáciles de implementar",
+        "link": "https://example.com/article",
+        "category": "code"
     }}
 
     Listado de Ítems:
