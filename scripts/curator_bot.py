@@ -4,7 +4,7 @@ import json
 import feedparser
 import requests
 import datetime
-import google.generativeai as genai
+from google import genai
 
 def main():
     gemini_key = os.environ.get("GEMINI_API_KEY")
@@ -40,8 +40,7 @@ def main():
         links_payload += f"- Titulo: {entry.title}\n- Link: {entry.link}\n- Extracto: {entry.description[:300]}...\n\n"
 
     # Preparar Prompt para Gemini
-    genai.configure(api_key=gemini_key)
-    model = genai.GenerativeModel('gemini-1.5-flash-latest')
+    client = genai.Client(api_key=gemini_key)
 
     prompt = f"""
     Eres un curador experto en desarrollo web y diseño UX/UI. 
@@ -61,7 +60,10 @@ def main():
     """
 
     print("Analizando con Gemini...")
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=prompt
+    )
     output = response.text.strip()
 
     if output == "SKIP" or "SKIP" in output:
