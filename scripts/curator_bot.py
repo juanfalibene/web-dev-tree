@@ -16,17 +16,23 @@ def main():
         print("Missing required environment variables.")
         sys.exit(1)
 
-    # Lógica Cíclica (Cada ciclo de 3 semanas cambia la fuente)
-    # week_num 1 % 3 = 1 (Smashing), 2 % 3 = 2 (Codrops), 3 % 3 = 0 (Product Hunt)
+    # Lógica Cíclica (Cada ciclo de 10 semanas cambia la fuente)
+    # 0: Smashing, 1: Codrops, 2: PH, 3: ALA, 4: web.dev, 5: dev.to, 6: fCC, 7: GitHub, 8: Chromium, 9: StackOverflow
     feeds = {
-        1: {"name": "Smashing Magazine", "url": "https://www.smashingmagazine.com/feed/"},
-        2: {"name": "Codrops", "url": "https://tympanus.net/codrops/feed/"},
-        0: {"name": "Product Hunt", "url": "https://www.producthunt.com/feed"} 
-        # Nota: PH feed es general, le pedimos a IA explícitamente "Developer Tools"
+        0: {"name": "Smashing Magazine", "url": "https://www.smashingmagazine.com/feed/", "focus": "artículos de opinión, diseño UX/UI y front-end avanzado"},
+        1: {"name": "Codrops", "url": "https://tympanus.net/codrops/feed/", "focus": "innovación front-end, artículos técnicos y demos creativas"},
+        2: {"name": "Product Hunt", "url": "https://www.producthunt.com/feed", "focus": "herramientas para desarrolladores (Developer Tools)"},
+        3: {"name": "A List Apart", "url": "https://alistapart.com/main/feed/", "focus": "artículos profundos sobre diseño web, accesibilidad y voces de la industria"},
+        4: {"name": "web.dev", "url": "https://web.dev/feed.xml", "focus": "estándares web, documentación oficial y blogs de ingeniería"},
+        5: {"name": "DEV Community", "url": "https://dev.to/feed/tag/webdev", "focus": "experiencias de la comunidad, guías rápidas y tendencias de desarrollo"},
+        6: {"name": "freeCodeCamp News", "url": "https://www.freecodecamp.org/news/rss/", "focus": "cursos completos, tutoriales prácticos y guías paso a paso"},
+        7: {"name": "GitHub Blog", "url": "https://github.blog/feed/", "focus": "novedades de herramientas, actualizaciones de Git y cultura open source"},
+        8: {"name": "Chromium Blog", "url": "https://blog.chromium.org/feeds/posts/default", "focus": "documentación interna de Chrome, novedades del motor web y APIs experimentales"},
+        9: {"name": "StackOverflow Blog", "url": "https://stackoverflow.blog/feed/", "focus": "voces de ingenieros, análisis de la industria y debates de programación"}
     }
 
     week_num = datetime.date.today().isocalendar()[1]
-    cycle_index = week_num % 3
+    cycle_index = week_num % 10
     target_feed = feeds[cycle_index]
 
     print(f"Semana {week_num} (Index {cycle_index}): Fetching de {target_feed['name']}")
@@ -37,7 +43,9 @@ def main():
 
     links_payload = ""
     for entry in entries:
-        links_payload += f"- Titulo: {entry.title}\n- Link: {entry.link}\n- Extracto: {entry.description[:300]}...\n\n"
+        # Algunos feeds usan 'summary' en lugar de 'description'
+        desc = entry.get('description', entry.get('summary', ""))[:300]
+        links_payload += f"- Titulo: {entry.title}\n- Link: {entry.link}\n- Extracto: {desc}...\n\n"
 
     # Preparar Prompt para Gemini
     client = genai.Client(api_key=gemini_key)
@@ -58,11 +66,11 @@ def main():
 
     prompt = f"""
     Eres un curador experto en desarrollo web y diseño UX/UI. 
-    Tu objetivo es leer los siguientes artículos/recursos recientes de '{target_feed['name']}' y elegir SOLO UNO que sea el más relevante y útil (por ejemplo: recursos de diseño, CSS avanzado, herramientas de programación {', idealmente Developer Tools' if target_feed['name'] == 'Product Hunt' else ''}).
+    Tu objetivo es leer los siguientes ítems del feed '{target_feed['name']}' ({target_feed['focus']}) y elegir SOLO UNO que sea el más relevante y útil para una audiencia de desarrolladores profesionales.
 
-    Si ninguno es interesante o útil para la audiencia, responde EXACTAMENTE con la palabra "SKIP".
+    Si ninguno es interesante o realmente aporta valor, responde EXACTAMENTE con la palabra "SKIP".
 
-    Si encuentras un buen recurso, debes redactar la respuesta EXACTAMENTE en formato JSON plano (sin marcadores de bloque de código como ```json). El JSON debe contener:
+    Si encuentras un buen recurso, redacta la respuesta EXACTAMENTE en formato JSON plano. El JSON debe contener:
     {{
         "title": "Título corto y conciso (MÁXIMO 40 caracteres)",
         "content_text": "Descripción breve y atractiva (MÁXIMO 70 caracteres)",
@@ -70,10 +78,15 @@ def main():
         "category": "UNA sola categoría de esta lista: {', '.join(categories_map.keys())}"
     }}
 
-    EJEMPLO de formato correcto:
+    Prioridad de categorías para esta fuente ({target_feed['name']}):
+    - Intenta asignar categorías que este feed cubra bien (ej. freeCodeCamp -> 'courses', web.dev -> 'docs', A List Apart -> 'voices' o 'design').
+    - Si el contenido es una herramienta de GitHub Blog o Chromium, usa 'tools' o 'docs'.
+    - Si es un artículo de opinión de StackOverflow o Smashing, usa 'voices' o 'articles'.
+
+    EJEMPLO:
     {{
         "title": "CSS & HTML Buttons",
-        "content_text": "Botones personalizables hechos con puro CSS y HTML, fáciles de implementar",
+        "content_text": "Botones personalizables hechos con puro CSS y HTML",
         "link": "https://example.com/article",
         "category": "code"
     }}
