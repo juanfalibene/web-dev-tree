@@ -699,20 +699,25 @@ ul.wp-block-latest-posts li a:hover {
 }
 
 article.post-card p.read-more a.button-link {
-  background-color: #242424;
-  color: #f1f1f1;
-  font-size: 0.875em;
-  padding: 0.5em 1.25em;
-  border-radius: 0.25em;
+  display: inline-block;
+  background-color: #272727;
+  color: #ffffff !important;
+  font-size: 0.85rem;
+  padding: 10px 24px;
+  border-radius: 999px;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
   text-align: center;
-  opacity: 0.8;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 article.post-card p.read-more a.button-link:hover {
-  opacity: 1;
-  scale: 1.1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  background-color: #1d1d1f;
+  text-decoration: none !important;
 }
 
 article.post-card span.edit-link {
@@ -976,8 +981,9 @@ footer a:hover img.img-profile {
 .resource-category-badge {
   display: inline-block;
   padding: 4px 12px;
-  background: rgba(0, 113, 227, 0.1);
-  color: #0071e3;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 600;
@@ -1022,19 +1028,20 @@ footer a:hover img.img-profile {
 
 .resource-button {
   display: inline-block;
-  background: linear-gradient(180deg, #0077ed 0%, #006edb 100%);
+  background: #272727;
   color: #ffffff !important;
   padding: 14px 32px;
   border-radius: 999px;
   font-weight: 600;
   font-size: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
 }
 
 .resource-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  background: #1d1d1f;
   text-decoration: none !important;
 }
 
