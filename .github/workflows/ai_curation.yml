@@ -2,8 +2,8 @@ name: Weekly AI Curation Bot
 
 on:
   schedule:
-    # Corre todos los martes a las 04:00 AM UTC
-    - cron: '0 4 * * 2'
+    # Corre todos los lunes a las 04:00 AM UTC
+    - cron: '0 4 * * 1'
   workflow_dispatch:
     # Permite correrlo manualmente desde Actions tab para hacer pruebas.
 

@@ -6,6 +6,8 @@ import requests
 import datetime
 from google import genai
 
+import time
+
 def main():
     gemini_key = os.environ.get("GEMINI_API_KEY")
     wp_api_url = os.environ.get("WP_API_URL")
@@ -96,10 +98,27 @@ def main():
     """
 
     print("Analizando con Gemini...")
-    response = client.models.generate_content(
-        model="gemini-2.5-flash-lite",
-        contents=prompt
-    )
+    max_retries = 5
+    backoff_factor = 2
+    initial_delay = 5  # segundos
+    response = None
+
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(
+                model="gemini-2.5-flash-lite",
+                contents=prompt
+            )
+            break
+        except Exception as e:
+            if attempt == max_retries - 1:
+                print(f"Error persistente tras {max_retries} intentos al llamar a Gemini. Abortando.")
+                raise
+            delay = initial_delay * (backoff_factor ** attempt)
+            print(f"Error al llamar a Gemini: {e}")
+            print(f"Reintentando en {delay} segundos (intento {attempt + 1}/{max_retries})...")
+            time.sleep(delay)
+
     output = response.text.strip()
 
     if output == "SKIP" or "SKIP" in output:
