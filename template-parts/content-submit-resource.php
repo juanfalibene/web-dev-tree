@@ -12,6 +12,7 @@ $form_data    = get_query_var( 'submit_form_data', [] );
 // Ensure defaults for form fields if not set.
 $form_data = wp_parse_args( $form_data, [
     'resource_name'        => '',
+    'your_name'            => '',
     'resource_email'       => '',
     'resource_link'        => '',
     'resource_category'    => 0,
@@ -55,64 +56,100 @@ $form_data = wp_parse_args( $form_data, [
                 <div class="hp-wrapper" aria-hidden="true" style="position:absolute; left:-9999px;">
                     <label for="website_url"><?php esc_html_e( 'Leave blank', 'web-dev-tree' ); ?></label>
                     <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off" />
-                </div>
+                </div><?php
+        // User Name field
+        ?>
+        <div class="form-group">
+            <label for="your_name"><?php esc_html_e( 'Your Name', 'web-dev-tree' ); ?></label>
+            <input type="text" id="your_name" name="your_name" required minlength="2"
+                value="<?php echo esc_attr( $form_data['your_name'] ); ?>"
+                placeholder="<?php esc_attr_e( 'e.g. John Doe', 'web-dev-tree' ); ?>"
+                aria-describedby="yourname-hint" />
+            <span id="yourname-hint" class="form-hint" style="display:none;">
+                <?php esc_html_e( 'Minimum 2 characters.', 'web-dev-tree' ); ?>
+            </span>
+            <span class="form-error" id="yourname-error">
+                <?php esc_html_e( '❌ Your name is required (minimum 2 characters).', 'web-dev-tree' ); ?>
+            </span>
+        </div>
 
-                <div class="form-group">
-                    <label for="resource_name"><?php esc_html_e( 'Resource Name', 'web-dev-tree' ); ?></label>
-                    <input type="text" id="resource_name" name="resource_name" required minlength="2"
-                        value="<?php echo esc_attr( $form_data['resource_name'] ); ?>"
-                        placeholder="<?php esc_attr_e( 'e.g. CSS Generators Pro', 'web-dev-tree' ); ?>"
-                        aria-describedby="name-hint" />
-                    <span id="name-hint" class="form-hint" style="display:none;"><?php esc_html_e( 'Minimum 2 characters.', 'web-dev-tree' ); ?></span>
-                    <span class="form-error" id="name-error"><?php esc_html_e( '❌ Name is required (minimum 2 characters).', 'web-dev-tree' ); ?></span>
-                </div>
+        <?php
+        // User Email field
+        ?>
+        <div class="form-group">
+            <label for="resource_email"><?php esc_html_e( 'Your Email Address', 'web-dev-tree' ); ?></label>
+            <input type="email" id="resource_email" name="resource_email" required
+                value="<?php echo esc_attr( $form_data['resource_email'] ); ?>"
+                placeholder="<?php esc_attr_e( 'e.g. you@example.com', 'web-dev-tree' ); ?>"
+                autocomplete="email" />
+            <span class="form-error" id="email-error">
+                <?php esc_html_e( '❌ Please enter a valid email address.', 'web-dev-tree' ); ?>
+            </span>
+        </div>
 
-                <div class="form-group">
-                    <label for="resource_email"><?php esc_html_e( 'Your Email Address', 'web-dev-tree' ); ?></label>
-                    <input type="email" id="resource_email" name="resource_email" required
-                        value="<?php echo esc_attr( $form_data['resource_email'] ); ?>"
-                        placeholder="<?php esc_attr_e( 'e.g. you@example.com', 'web-dev-tree' ); ?>"
-                        autocomplete="email" />
-                    <span class="form-error" id="email-error"><?php esc_html_e( '❌ Please enter a valid email address.', 'web-dev-tree' ); ?></span>
-                </div>
+        <?php
+        // Resource Name field
+        ?>
+        <div class="form-group">
+            <label for="resource_name"><?php esc_html_e( 'Resource Name', 'web-dev-tree' ); ?></label>
+            <input type="text" id="resource_name" name="resource_name" required minlength="2"
+                value="<?php echo esc_attr( $form_data['resource_name'] ); ?>"
+                placeholder="<?php esc_attr_e( 'e.g. CSS Generators Pro', 'web-dev-tree' ); ?>"
+                aria-describedby="name-hint" />
+            <span id="name-hint" class="form-hint" style="display:none;">
+                <?php esc_html_e( 'Minimum 2 characters.', 'web-dev-tree' ); ?>
+            </span>
+            <span class="form-error" id="name-error">
+                <?php esc_html_e( '❌ Name is required (minimum 2 characters).', 'web-dev-tree' ); ?>
+            </span>
+        </div>
 
-                <div class="form-group">
-                    <label for="resource_link"><?php esc_html_e( 'Resource Link (URL)', 'web-dev-tree' ); ?></label>
-                    <input type="url" id="resource_link" name="resource_link" required
-                        value="<?php echo esc_url( $form_data['resource_link'] ); ?>"
-                        placeholder="<?php esc_attr_e( 'e.g. https://example.com', 'web-dev-tree' ); ?>" />
-                    <span class="form-error" id="link-error"><?php esc_html_e( '❌ Please enter a valid URL.', 'web-dev-tree' ); ?></span>
-                </div>
+        <?php
+        // Resource Link field
+        ?>
+        <div class="form-group">
+            <label for="resource_link"><?php esc_html_e( 'Resource Link (URL)', 'web-dev-tree' ); ?></label>
+            <input type="url" id="resource_link" name="resource_link" required
+                value="<?php echo esc_url( $form_data['resource_link'] ); ?>"
+                placeholder="<?php esc_attr_e( 'e.g. https://example.com', 'web-dev-tree' ); ?>" />
+            <span class="form-error" id="link-error"><?php esc_html_e( '❌ Please enter a valid URL.', 'web-dev-tree' ); ?></span>
+        </div>
 
-                <div class="form-group">
-                    <label for="resource_category"><?php esc_html_e( 'Category', 'web-dev-tree' ); ?></label>
-                    <?php
-                    $categories = get_terms( [
-                        'taxonomy'   => 'category_resource',
-                        'hide_empty' => false,
-                    ] );
-                    ?>
-                    <select id="resource_category" name="resource_category" required>
-                        <option value="" disabled <?php selected( $form_data['resource_category'], 0 ); ?>>
-                            <?php esc_html_e( 'Select a category...', 'web-dev-tree' ); ?>
+        <?php
+        // Category field
+        ?>
+        <div class="form-group">
+            <label for="resource_category"><?php esc_html_e( 'Category', 'web-dev-tree' ); ?></label>
+            <?php
+            $categories = get_terms( [
+                'taxonomy'   => 'category_resource',
+                'hide_empty' => false,
+            ] );
+            ?>
+            <select id="resource_category" name="resource_category" required>
+                <option value="" disabled <?php selected( $form_data['resource_category'], 0 ); ?>>
+                    <?php esc_html_e( 'Select a category...', 'web-dev-tree' ); ?>
+                </option>
+                <?php if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) : ?>
+                    <?php foreach ( $categories as $cat ) : ?>
+                        <option value="<?php echo esc_attr( $cat->term_id ); ?>" <?php selected( $form_data['resource_category'], $cat->term_id ); ?> >
+                            <?php echo esc_html( $cat->name ); ?>
                         </option>
-                        <?php if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) : ?>
-                            <?php foreach ( $categories as $cat ) : ?>
-                                <option value="<?php echo esc_attr( $cat->term_id ); ?>" <?php selected( $form_data['resource_category'], $cat->term_id ); ?> >
-                                    <?php echo esc_html( $cat->name ); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </select>
-                    <span class="form-error" id="category-error"><?php esc_html_e( '❌ Please select a category for the resource.', 'web-dev-tree' ); ?></span>
-                </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+            <span class="form-error" id="category-error"><?php esc_html_e( '❌ Please select a category for the resource.', 'web-dev-tree' ); ?></span>
+        </div>
 
-                <div class="form-group">
-                    <label for="resource_description"><?php esc_html_e( 'Short Description', 'web-dev-tree' ); ?></label>
-                    <textarea id="resource_description" name="resource_description" required minlength="15" maxlength="300"
-                        placeholder="<?php esc_attr_e( 'Briefly describe what this resource is about (between 15 and 300 characters)...', 'web-dev-tree' ); ?>"><?php echo esc_textarea( $form_data['resource_description'] ); ?></textarea>
-                    <span class="form-error" id="desc-error"><?php esc_html_e( '❌ Description is required (between 15 and 300 characters).', 'web-dev-tree' ); ?></span>
-                </div>
+        <?php
+        // Description field
+        ?>
+        <div class="form-group">
+            <label for="resource_description"><?php esc_html_e( 'Short Description', 'web-dev-tree' ); ?></label>
+            <textarea id="resource_description" name="resource_description" required minlength="15" maxlength="300"
+                placeholder="<?php esc_attr_e( 'Briefly describe what this resource is about (between 15 and 300 characters)...', 'web-dev-tree' ); ?>"><?php echo esc_textarea( $form_data['resource_description'] ); ?></textarea>
+            <span class="form-error" id="desc-error"><?php esc_html_e( '❌ Description is required (between 15 and 300 characters).', 'web-dev-tree' ); ?></span>
+        </div>        
 
                 <button type="submit" name="submit_resource" class="resource-button" style="align-self:center;margin-top:1rem;border:none;cursor:pointer;">
                     <?php esc_html_e( 'Submit Suggestion', 'web-dev-tree' ); ?>

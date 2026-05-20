@@ -11,6 +11,7 @@ $errors    = [];
 $success   = false;
 $form_data = [
     'resource_name'        => '',
+    'your_name'            => '',
     'resource_email'       => '',
     'resource_link'        => '',
     'resource_category'    => 0,
@@ -38,6 +39,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['submit_resource'] )
 
     // 4. Sanitize inputs
     $form_data['resource_name']        = sanitize_text_field( $_POST['resource_name'] ?? '' );
+    $form_data['your_name']            = sanitize_text_field( $_POST['your_name'] ?? '' );
     $form_data['resource_email']       = sanitize_email( $_POST['resource_email'] ?? '' );
     $form_data['resource_link']        = esc_url_raw( $_POST['resource_link'] ?? '' );
     $form_data['resource_category']    = intval( $_POST['resource_category'] ?? 0 );
@@ -48,6 +50,12 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['submit_resource'] )
         $errors['name'] = __( 'The resource name is required.', 'web-dev-tree' );
     } elseif ( strlen( $form_data['resource_name'] ) < 2 ) {
         $errors['name'] = __( 'The name must be at least 2 characters long.', 'web-dev-tree' );
+    }
+
+    if ( empty( $form_data['your_name'] ) ) {
+        $errors['your_name'] = __( 'Your name is required.', 'web-dev-tree' );
+    } elseif ( strlen( $form_data['your_name'] ) < 2 ) {
+        $errors['your_name'] = __( 'Your name must be at least 2 characters long.', 'web-dev-tree' );
     }
 
     if ( empty( $form_data['resource_email'] ) ) {
@@ -90,7 +98,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['submit_resource'] )
             'meta_input'   => [
                 '_external_link'   => $form_data['resource_link'],
                 '_submitter_email' => $form_data['resource_email'],
-                '_submitter_name'  => $form_data['resource_name'],
+                '_submitter_name'  => $form_data['your_name'],
             ],
         ] );
 
