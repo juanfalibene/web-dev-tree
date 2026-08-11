@@ -7,6 +7,9 @@ on:
   workflow_dispatch:
     # Permite correrlo manualmente desde Actions tab para hacer pruebas.
 
+permissions:
+  contents: write
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -36,3 +39,15 @@ jobs:
           WP_USERNAME: ${{ secrets.WP_USERNAME }}
           WP_APP_PASS: ${{ secrets.WP_APP_PASS }}
         run: python scripts/curator_bot.py
+
+      - name: Keep repository active and record history
+        if: always()
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > scripts/.last_run
+          git add scripts/.last_run
+          if [ -f scripts/curated_history.json ]; then
+            git add scripts/curated_history.json
+          fi
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(bot): update curation history & keepalive [skip ci]" && git push)

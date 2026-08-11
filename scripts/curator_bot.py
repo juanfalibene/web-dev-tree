@@ -162,6 +162,38 @@ def main():
     if res.status_code in [200, 201]:
         print("Post publicado exitosamente!")
         print(f"Link: {data['link']}")
+
+        # Guardar en histórico local para registro y mantener actividad en el repo
+        try:
+            history_path = os.path.join(os.path.dirname(__file__), "curated_history.json")
+            history = []
+            if os.path.exists(history_path):
+                with open(history_path, "r", encoding="utf-8") as f:
+                    try:
+                        history = json.load(f)
+                    except json.JSONDecodeError:
+                        history = []
+
+            history.append({
+                "date": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                "week": week_num,
+                "source": target_feed['name'],
+                "title": data["title"],
+                "content_text": data["content_text"],
+                "link": data["link"],
+                "category": selected_cat,
+                "category_id": cat_id
+            })
+
+            # Mantener los últimos 100 registros
+            if len(history) > 100:
+                history = history[-100:]
+
+            with open(history_path, "w", encoding="utf-8") as f:
+                json.dump(history, f, indent=2, ensure_ascii=False)
+            print("Registro guardado exitosamente en scripts/curated_history.json")
+        except Exception as e:
+            print(f"Aviso: No se pudo guardar en curated_history.json: {e}")
     else:
         print(f"Falló la publicación en WP: HTTP {res.status_code}")
         print(res.text)

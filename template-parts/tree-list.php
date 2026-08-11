@@ -1,8 +1,13 @@
 <section class="tree-list">
     <!-- Resource Categories -->
+     <?php 
+        // 1. Obtener el número total de posts publicados de tipo 'resource'
+        $count_resources = wp_count_posts('resource');
+        $total_resources = isset($count_resources->publish) ? $count_resources->publish : 0;
+     ?>
     <ul class="categories">
         <li class="category" id="all">
-            <a href="#">All</a>
+            <a href="#">All (<?php echo esc_html($total_resources); ?>)</a>
         </li>
 
         <?php
