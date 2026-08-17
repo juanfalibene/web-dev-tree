@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "date": "2026-08-17T04:39:02.640047+00:00",
+    "week": 34,
+    "source": "web.dev",
+    "title": "Novedades Plataforma Web Mayo 2026",
+    "content_text": "Explora nuevas funciones en navegadores web estables y beta de Mayo 2026.",
+    "link": "https://web.dev/blog/web-platform-05-2026?hl=en",
+    "category": "blogs",
+    "category_id": 12
+  }
+]
