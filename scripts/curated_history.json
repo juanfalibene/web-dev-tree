@@ -8,5 +8,15 @@
     "link": "https://web.dev/blog/web-platform-05-2026?hl=en",
     "category": "blogs",
     "category_id": 12
+  },
+  {
+    "date": "2026-08-24T04:41:42.506915+00:00",
+    "week": 35,
+    "source": "DEV Community",
+    "title": "Stop XSS Attacks",
+    "content_text": "Introducción a Content Security Policy (CSP) para mitigar ataques XSS.",
+    "link": "https://dev.to/saurav_tb_pandey/stop-xss-attacks-cold-an-introduction-to-content-security-policy-csp-383m",
+    "category": "tutorials",
+    "category_id": 6
   }
 ]
