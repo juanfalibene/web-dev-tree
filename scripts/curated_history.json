@@ -18,5 +18,15 @@
     "link": "https://dev.to/saurav_tb_pandey/stop-xss-attacks-cold-an-introduction-to-content-security-policy-csp-383m",
     "category": "tutorials",
     "category_id": 6
+  },
+  {
+    "date": "2026-08-31T10:31:11.227401+00:00",
+    "week": 36,
+    "source": "freeCodeCamp News",
+    "title": "CDN Cache Made Site Slower",
+    "content_text": "Descubre por qué una caché CDN hizo que tu sitio fuera más lento y cómo evitarlo.",
+    "link": "https://www.freecodecamp.org/news/cdn-cache-made-my-site-slower/",
+    "category": "articles",
+    "category_id": 9
   }
 ]
