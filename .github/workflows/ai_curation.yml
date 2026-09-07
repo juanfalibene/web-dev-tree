@@ -2,16 +2,13 @@ name: Weekly AI Curation Bot
 
 on:
   schedule:
-    # Corre todos los lunes a las 04:00 AM UTC
-    - cron: '0 4 * * 1'
+    # Corre todos los lunes a las 04:17 AM UTC (minuto no entero para evitar congestión en GitHub Actions)
+    - cron: '17 4 * * 1'
   workflow_dispatch:
     # Permite correrlo manualmente desde Actions tab para hacer pruebas.
 
 permissions:
   contents: write
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   curate_and_post:
@@ -50,4 +47,5 @@ jobs:
           if [ -f scripts/curated_history.json ]; then
             git add scripts/curated_history.json
           fi
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(bot): update curation history & keepalive [skip ci]" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(bot): update curation history & keepalive [skip ci]" && git push origin HEAD:main)
+

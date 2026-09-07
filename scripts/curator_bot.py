@@ -103,10 +103,13 @@ def main():
     initial_delay = 5  # segundos
     response = None
 
+    models_to_try = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash"]
+
     for attempt in range(max_retries):
+        model_name = models_to_try[attempt % len(models_to_try)]
         try:
             response = client.models.generate_content(
-                model="gemini-2.5-flash-lite",
+                model=model_name,
                 contents=prompt
             )
             break
@@ -115,7 +118,7 @@ def main():
                 print(f"Error persistente tras {max_retries} intentos al llamar a Gemini. Abortando.")
                 raise
             delay = initial_delay * (backoff_factor ** attempt)
-            print(f"Error al llamar a Gemini: {e}")
+            print(f"Error al llamar a Gemini con modelo {model_name}: {e}")
             print(f"Reintentando en {delay} segundos (intento {attempt + 1}/{max_retries})...")
             time.sleep(delay)
 
@@ -126,14 +129,27 @@ def main():
         sys.exit(0)
 
     try:
-        # Remover formateos markdown de JSON si Gemini insiste en usarlos
-        if output.startswith("```json"):
-            output = output.replace("```json", "", 1)
-        if output.endswith("```"):
-            output = output.rsplit("```", 1)[0]
-        output = output.strip()
+        # Extraer JSON de forma robusta
+        clean_output = output
+        if "```" in clean_output:
+            lines = clean_output.splitlines()
+            code_lines = []
+            in_block = False
+            for line in lines:
+                if line.strip().startswith("```"):
+                    in_block = not in_block
+                    continue
+                if in_block:
+                    code_lines.append(line)
+            if code_lines:
+                clean_output = "\n".join(code_lines)
 
-        data = json.loads(output)
+        start_idx = clean_output.find("{")
+        end_idx = clean_output.rfind("}")
+        if start_idx != -1 and end_idx != -1:
+            clean_output = clean_output[start_idx:end_idx+1]
+
+        data = json.loads(clean_output)
     except json.JSONDecodeError as e:
         print("Error parseando el JSON de Gemini. Output recibido:")
         print(output)
