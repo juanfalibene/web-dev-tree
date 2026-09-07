@@ -8,6 +8,31 @@ from google import genai
 
 import time
 
+def fetch_wp_categories(wp_api_url, wp_auth):
+    """
+    Intenta obtener las categorías de la taxonomía category_resource desde la API REST de WordPress.
+    Devuelve un diccionario {slug: term_id}.
+    """
+    try:
+        parts = wp_api_url.split('/wp/v2/')
+        if len(parts) > 1:
+            cat_url = parts[0] + '/wp/v2/category_resource?per_page=100'
+            res = requests.get(cat_url, auth=wp_auth, timeout=8)
+            if res.status_code == 200:
+                categories = res.json()
+                mapped = {}
+                for cat in categories:
+                    slug = cat.get('slug', '').lower()
+                    cat_id = cat.get('id')
+                    if slug and cat_id:
+                        mapped[slug] = cat_id
+                if mapped:
+                    print(f"Categorías detectadas en WordPress API: {list(mapped.keys())}")
+                    return mapped
+    except Exception as e:
+        print(f"Aviso: No se pudo obtener categorías dinámicas de WP ({e}). Usando mapa estático.")
+    return {}
+
 def main():
     gemini_key = os.environ.get("GEMINI_API_KEY")
     wp_api_url = os.environ.get("WP_API_URL")
@@ -18,19 +43,42 @@ def main():
         print("Missing required environment variables.")
         sys.exit(1)
 
+    wp_auth = (wp_user, wp_pass)
+    dynamic_cats = fetch_wp_categories(wp_api_url, wp_auth)
+
+    # Categorías disponibles por defecto en WordPress
+    categories_map = {
+        "inspiration": 3,
+        "tools": 4,
+        "courses": 5,
+        "voices": 13,
+        "tutorials": 6,
+        "docs": 7,
+        "code": 11,
+        "blogs": 12,
+        "articles": 9,
+        "design": 10,
+        "ai": 14
+    }
+
+    # Sobrescribir con los IDs reales de WordPress si existen
+    for slug, term_id in dynamic_cats.items():
+        categories_map[slug] = term_id
+        if slug in ["ai", "ia", "ai-tools", "inteligencia-artificial"]:
+            categories_map["ai"] = term_id
+
     # Lógica Cíclica (Cada ciclo de 10 semanas cambia la fuente)
-    # 0: Smashing, 1: Codrops, 2: PH, 3: ALA, 4: web.dev, 5: dev.to, 6: fCC, 7: GitHub, 8: Chromium, 9: StackOverflow
     feeds = {
-        0: {"name": "Smashing Magazine", "url": "https://www.smashingmagazine.com/feed/", "focus": "artículos de opinión, diseño UX/UI y front-end avanzado"},
-        1: {"name": "Codrops", "url": "https://tympanus.net/codrops/feed/", "focus": "innovación front-end, artículos técnicos y demos creativas"},
-        2: {"name": "Product Hunt", "url": "https://www.producthunt.com/feed", "focus": "herramientas para desarrolladores (Developer Tools)"},
-        3: {"name": "A List Apart", "url": "https://alistapart.com/main/feed/", "focus": "artículos profundos sobre diseño web, accesibilidad y voces de la industria"},
-        4: {"name": "web.dev", "url": "https://web.dev/feed.xml", "focus": "estándares web, documentación oficial y blogs de ingeniería"},
-        5: {"name": "DEV Community", "url": "https://dev.to/feed/tag/webdev", "focus": "experiencias de la comunidad, guías rápidas y tendencias de desarrollo"},
-        6: {"name": "freeCodeCamp News", "url": "https://www.freecodecamp.org/news/rss/", "focus": "cursos completos, tutoriales prácticos y guías paso a paso"},
-        7: {"name": "GitHub Blog", "url": "https://github.blog/feed/", "focus": "novedades de herramientas, actualizaciones de Git y cultura open source"},
-        8: {"name": "Chromium Blog", "url": "https://blog.chromium.org/feeds/posts/default", "focus": "documentación interna de Chrome, novedades del motor web y APIs experimentales"},
-        9: {"name": "StackOverflow Blog", "url": "https://stackoverflow.blog/feed/", "focus": "voces de ingenieros, análisis de la industria y debates de programación"}
+        0: {"name": "Smashing Magazine", "url": "https://www.smashingmagazine.com/feed/", "focus": "consejos prácticos de UX/UI, trucos de CSS y guías accesibles de diseño front-end"},
+        1: {"name": "Codrops", "url": "https://tympanus.net/codrops/feed/", "focus": "demos creativas, efectos CSS/JS interactivos e inspiración visual fácil de implementar"},
+        2: {"name": "Product Hunt", "url": "https://www.producthunt.com/feed", "focus": "nuevas herramientas para desarrolladores, utilidades de productividad y aplicaciones de IA"},
+        3: {"name": "A List Apart", "url": "https://alistapart.com/main/feed/", "focus": "artículos amigables sobre diseño web, accesibilidad y buenas prácticas de la industria"},
+        4: {"name": "web.dev", "url": "https://web.dev/feed.xml", "focus": "guías prácticas de rendimiento web, mejores prácticas de HTML/CSS y componentes modernos"},
+        5: {"name": "DEV Community", "url": "https://dev.to/feed/tag/webdev", "focus": "tutoriales sencillos de la comunidad, trucos rápidos de código e integraciones de IA"},
+        6: {"name": "freeCodeCamp News", "url": "https://www.freecodecamp.org/news/rss/", "focus": "tutoriales paso a paso para principiantes e intermedios, guías de aprendizaje y proyectos"},
+        7: {"name": "GitHub Blog", "url": "https://github.blog/feed/", "focus": "trucos de Git, novedades de GitHub Copilot / IA y consejos prácticos para desarrolladores"},
+        8: {"name": "Chromium Blog", "url": "https://blog.chromium.org/feeds/posts/default", "focus": "nuevas funcionalidades útiles de navegadores, APIs web modernas y herramientas de DevTools"},
+        9: {"name": "StackOverflow Blog", "url": "https://stackoverflow.blog/feed/", "focus": "reflexiones cercanas sobre la carrera dev, encuestas de desarrollo e IA en la programación"}
     }
 
     week_num = datetime.date.today().isocalendar()[1]
@@ -45,52 +93,37 @@ def main():
 
     links_payload = ""
     for entry in entries:
-        # Algunos feeds usan 'summary' en lugar de 'description'
         desc = entry.get('description', entry.get('summary', ""))[:300]
         links_payload += f"- Titulo: {entry.title}\n- Link: {entry.link}\n- Extracto: {desc}...\n\n"
 
     # Preparar Prompt para Gemini
     client = genai.Client(api_key=gemini_key)
 
-    # Categorías disponibles en WordPress
-    categories_map = {
-        "inspiration": 3,
-        "tools": 4,
-        "courses": 5,
-        "voices": 13,
-        "tutorials": 6,
-        "docs": 7,
-        "code": 11,
-        "blogs": 12,
-        "articles": 9,
-        "design": 10
-    }
-
     prompt = f"""
-    Eres un curador experto en desarrollo web y diseño UX/UI. 
-    Tu objetivo es leer los siguientes ítems del feed '{target_feed['name']}' ({target_feed['focus']}) y elegir SOLO UNO que sea el más relevante y útil para una audiencia de desarrolladores profesionales.
+    Eres un curador amigable, didáctico y cercano para una comunidad de desarrolladores web y diseñadores UX/UI.
+    Tu objetivo es seleccionar UN SOLO recurso del feed '{target_feed['name']}' ({target_feed['focus']}) que sea **práctico, fácil de digerir y verdaderamente útil** para un público de nivel principiante e intermedio.
 
-    Si ninguno es interesante o realmente aporta valor, responde EXACTAMENTE con la palabra "SKIP".
+    REGLAS DE SELECCIÓN Y NIVEL (FILTRO DE DIFICULTAD):
+    1. EVITA: Artículos excesivamente complejos, especificaciones técnicas áridas, papers de investigación, o actualizaciones de versión de bajo nivel que solo interesen al 1% de ingenieros senior.
+    2. PRIORIZA: Tutoriales paso a paso, trucos visuales de CSS/JS, herramientas que ahorren tiempo (especialmente con IA), componentes interactivos, listas de recursos y artículos con tono explicativo.
+    3. Si NINGUNO de los ítems es accesible, interesante o útil, responde EXACTAMENTE con la palabra "SKIP".
 
-    Si encuentras un buen recurso, redacta la respuesta EXACTAMENTE en formato JSON plano. El JSON debe contener:
+    HUMANIZACIÓN DEL TONO Y CONTENIDO:
+    - Redacta el título y la descripción en español claro, directo y amigable (evita traducciones robóticas o literales).
+    - Título: Atractivo y conciso (MÁXIMO 40 caracteres). Ej: "Crea botones animados en CSS", "5 herramientas de IA para devs", "Guía rápida de Flexbox".
+    - Descripción (content_text): Explicación entusiasta y breve del beneficio práctico (MÁXIMO 70 caracteres). Ej: "Aprende a diseñar componentes limpios y accesibles en 5 minutos."
+
+    CATEGORÍAS Y REGLA DE IA:
+    - Si el ítem trata sobre Inteligencia Artificial (Copilot, ChatGPT, Claude, generadores de código/UI, herramientas con IA o APIs de LLM), asígnale OBLIGATORIAMENTE la categoría "ai".
+    - De lo contrario, asigna UNA categoría de la lista de disponibles: {', '.join(categories_map.keys())}.
+
+    FORMATO DE RESPUESTA:
+    Responde EXACTAMENTE en formato JSON plano:
     {{
-        "title": "Título corto y conciso (MÁXIMO 40 caracteres)",
-        "content_text": "Descripción breve y atractiva (MÁXIMO 70 caracteres)",
+        "title": "Título amigable (máx 40 chars)",
+        "content_text": "Descripción útil (máx 70 chars)",
         "link": "El enlace original exacto del ítem seleccionado",
-        "category": "UNA sola categoría de esta lista: {', '.join(categories_map.keys())}"
-    }}
-
-    Prioridad de categorías para esta fuente ({target_feed['name']}):
-    - Intenta asignar categorías que este feed cubra bien (ej. freeCodeCamp -> 'courses', web.dev -> 'docs', A List Apart -> 'voices' o 'design').
-    - Si el contenido es una herramienta de GitHub Blog o Chromium, usa 'tools' o 'docs'.
-    - Si es un artículo de opinión de StackOverflow o Smashing, usa 'voices' o 'articles'.
-
-    EJEMPLO:
-    {{
-        "title": "CSS & HTML Buttons",
-        "content_text": "Botones personalizables hechos con puro CSS y HTML",
-        "link": "https://example.com/article",
-        "category": "code"
+        "category": "UNA sola categoría de la lista"
     }}
 
     Listado de Ítems:
@@ -157,11 +190,10 @@ def main():
 
     # Resolver categoría
     selected_cat = data.get("category", "").lower().strip()
-    cat_id = categories_map.get(selected_cat, 9)  # Default: articles
+    cat_id = categories_map.get(selected_cat, categories_map.get("articles", 9))
     print(f"Recurso seleccionado: {data.get('title')} | Categoría: {selected_cat} (ID {cat_id})")
 
     # Publicar en WordPress
-    wp_auth = (wp_user, wp_pass)
     wp_data = {
         "title": data["title"],
         "excerpt": data["content_text"],
@@ -217,3 +249,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
