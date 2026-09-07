@@ -28,5 +28,15 @@
     "link": "https://www.freecodecamp.org/news/cdn-cache-made-my-site-slower/",
     "category": "articles",
     "category_id": 9
+  },
+  {
+    "date": "2026-09-07T07:37:32.767369+00:00",
+    "week": 37,
+    "source": "GitHub Blog",
+    "title": "Evaluate LLMs Before Production",
+    "content_text": "Lessons learned evaluating LLMs for real-world secret scanning.",
+    "link": "https://github.blog/ai-and-ml/llms/how-to-evaluate-llms-before-production/",
+    "category": "articles",
+    "category_id": 9
   }
 ]
