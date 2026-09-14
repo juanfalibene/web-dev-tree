@@ -38,5 +38,15 @@
     "link": "https://github.blog/ai-and-ml/llms/how-to-evaluate-llms-before-production/",
     "category": "articles",
     "category_id": 9
+  },
+  {
+    "date": "2026-09-14T09:57:35.832950+00:00",
+    "week": 38,
+    "source": "Chromium Blog",
+    "title": "Adiós notificaciones molestas",
+    "content_text": "Descubre cómo Chrome te protege de notificaciones indeseadas. ¡Navega sin interrupciones!",
+    "link": "https://blog.chromium.org/2025/10/automatic-notification-permission.html",
+    "category": "tools",
+    "category_id": 4
   }
 ]
