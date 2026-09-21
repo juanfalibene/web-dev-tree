@@ -48,5 +48,15 @@
     "link": "https://blog.chromium.org/2025/10/automatic-notification-permission.html",
     "category": "tools",
     "category_id": 4
+  },
+  {
+    "date": "2026-09-21T10:01:03.443481+00:00",
+    "week": 39,
+    "source": "StackOverflow Blog",
+    "title": "IA: Palabras mágicas",
+    "content_text": "Descubre cómo obtener mejores respuestas de la IA con 'palabras mágicas'.",
+    "link": "https://stackoverflow.blog/2026/09/17/the-ai-magic-words/",
+    "category": "ai",
+    "category_id": 16
   }
 ]
