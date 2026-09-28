@@ -58,5 +58,15 @@
     "link": "https://stackoverflow.blog/2026/09/17/the-ai-magic-words/",
     "category": "ai",
     "category_id": 16
+  },
+  {
+    "date": "2026-09-28T11:00:00.983051+00:00",
+    "week": 40,
+    "source": "Smashing Magazine",
+    "title": "CSS: ¡Adiós a las Media Queries!",
+    "content_text": "Descubre cómo las Container Queries hacen que tus componentes sean realmente adaptables.",
+    "link": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/",
+    "category": "code",
+    "category_id": 11
   }
 ]
