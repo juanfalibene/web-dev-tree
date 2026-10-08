@@ -68,5 +68,15 @@
     "link": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/",
     "category": "code",
     "category_id": 11
+  },
+  {
+    "date": "2026-10-08T09:03:57.207137+00:00",
+    "week": 41,
+    "source": "Codrops",
+    "title": "Crea máscaras 3D con IA",
+    "content_text": "¡Descubre cómo hacer una máscara 3D en tiempo real usando IA y Three.js!",
+    "link": "https://tympanus.net/codrops/2026/09/06/building-a-real-time-3d-face-mask-with-mediapipe-threlte-and-three-js/",
+    "category": "ai",
+    "category_id": 16
   }
 ]
