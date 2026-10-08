@@ -47,5 +47,17 @@ jobs:
           if [ -f scripts/curated_history.json ]; then
             git add scripts/curated_history.json
           fi
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(bot): update curation history & keepalive [skip ci]" && git push origin HEAD:main)
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "Nada que commitear."
+            exit 0
+          fi
+          git commit -m "chore(bot): update curation history & keepalive [skip ci]"
+          # Reintentar por si main avanzó durante la ejecución (push rechazado)
+          for i in 1 2 3; do
+            git pull --rebase -X theirs origin main && git push origin HEAD:main && exit 0
+            echo "Push fallido (intento $i/3), reintentando..."
+            git rebase --abort 2>/dev/null || true
+            sleep 5
+          done
+          exit 1
 
