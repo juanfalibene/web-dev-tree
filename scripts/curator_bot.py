@@ -184,9 +184,9 @@ def main():
     """
 
     print("Analizando con Gemini...")
-    max_retries = 5
-    backoff_factor = 2
-    initial_delay = 5  # segundos
+    max_rounds = 3
+    backoff_factor = 3
+    initial_delay = 10  # segundos entre rondas completas de modelos
     response = None
 
     # Se puede forzar un modelo con la variable de entorno GEMINI_MODEL (se prueba primero)
@@ -194,32 +194,34 @@ def main():
     if os.environ.get("GEMINI_MODEL"):
         models_to_try.insert(0, os.environ["GEMINI_MODEL"])
 
-    attempt = 0
-    model_idx = 0
-    while response is None:
-        if model_idx >= len(models_to_try):
-            print("Error: ningún modelo de Gemini disponible. Abortando.")
-            sys.exit(1)
-        model_name = models_to_try[model_idx]
-        try:
-            response = client.models.generate_content(
-                model=model_name,
-                contents=prompt
-            )
-        except Exception as e:
-            print(f"Error al llamar a Gemini con modelo {model_name}: {e}")
-            msg = str(e)
-            # Modelo retirado/no existente: pasar al siguiente sin esperar
-            if "404" in msg or "NOT_FOUND" in msg:
-                model_idx += 1
+    dead_models = set()  # modelos retirados (404): no se vuelven a intentar
+    last_error = None
+    for round_num in range(1, max_rounds + 1):
+        for model_name in models_to_try:
+            if model_name in dead_models:
                 continue
-            attempt += 1
-            if attempt >= max_retries:
-                print(f"Error persistente tras {max_retries} intentos al llamar a Gemini. Abortando.")
-                raise
-            delay = initial_delay * (backoff_factor ** (attempt - 1))
-            print(f"Reintentando en {delay} segundos (intento {attempt}/{max_retries})...")
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt
+                )
+                break
+            except Exception as e:
+                last_error = e
+                print(f"Error al llamar a Gemini con modelo {model_name}: {e}")
+                if "404" in str(e) or "NOT_FOUND" in str(e):
+                    dead_models.add(model_name)
+                # Cualquier otro error (503, 429, desconexión...): probar el siguiente modelo
+        if response is not None:
+            break
+        if round_num < max_rounds:
+            delay = initial_delay * (backoff_factor ** (round_num - 1))
+            print(f"Ningún modelo respondió. Reintentando ronda en {delay} segundos (ronda {round_num}/{max_rounds})...")
             time.sleep(delay)
+
+    if response is None:
+        print(f"Error persistente tras {max_rounds} rondas con todos los modelos de Gemini. Abortando.")
+        raise last_error
 
     output = response.text.strip()
 
