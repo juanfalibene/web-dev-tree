@@ -6,7 +6,57 @@ import requests
 import datetime
 from google import genai
 
+import re
 import time
+
+USER_AGENT = "Mozilla/5.0 (compatible; WebDevTreeCuratorBot/1.0; +https://github.com/)"
+
+# URLs alternativas por si el feed principal bloquea a los runners de GitHub (HTTP 403)
+FALLBACK_FEEDS = {
+    "https://tympanus.net/codrops/feed/": ["https://feeds.feedburner.com/tympanus"],
+}
+
+def fetch_feed_entries(url):
+    """
+    Descarga el feed con un User-Agent propio y prueba URLs alternativas si falla.
+    Devuelve la lista de entradas (vacía si ningún origen funcionó).
+    """
+    for candidate in [url] + FALLBACK_FEEDS.get(url, []):
+        try:
+            res = requests.get(candidate, headers={"User-Agent": USER_AGENT}, timeout=20)
+            if res.status_code != 200:
+                print(f"Aviso: {candidate} respondió HTTP {res.status_code}")
+                continue
+            parsed = feedparser.parse(res.content)
+            if parsed.entries:
+                return parsed.entries
+            print(f"Aviso: {candidate} no devolvió entradas.")
+        except Exception as e:
+            print(f"Aviso: error descargando {candidate}: {e}")
+    return []
+
+def extract_resource(output, valid_links):
+    """
+    Extrae el primer objeto JSON válido (con title y link) de la respuesta del modelo,
+    ignorando texto extra, bloques ``` y arrays. Si hay lista de enlaces válidos,
+    exige que el link pertenezca al feed (evita enlaces alucinados).
+    """
+    decoder = json.JSONDecoder()
+    for match in re.finditer(r"[{\[]", output):
+        try:
+            obj, _ = decoder.raw_decode(output[match.start():])
+        except json.JSONDecodeError:
+            continue
+        candidates = obj if isinstance(obj, list) else [obj]
+        for cand in candidates:
+            if not isinstance(cand, dict):
+                continue
+            if not all(k in cand for k in ("title", "content_text", "link")):
+                continue
+            if valid_links and cand["link"] not in valid_links:
+                continue
+            return cand
+    return None
 
 def fetch_wp_categories(wp_api_url, wp_auth):
     """
@@ -88,8 +138,11 @@ def main():
     print(f"Semana {week_num} (Index {cycle_index}): Fetching de {target_feed['name']}")
 
     # Parse RSS
-    feed = feedparser.parse(target_feed['url'])
-    entries = feed.entries[:10]  # Tomar los 10 más recientes max
+    entries = fetch_feed_entries(target_feed['url'])[:10]  # Tomar los 10 más recientes max
+    if not entries:
+        print(f"Error: no se pudieron obtener entradas del feed de {target_feed['name']}. Abortando para evitar contenido inventado.")
+        sys.exit(1)
+    valid_links = {entry.link for entry in entries}
 
     links_payload = ""
     for entry in entries:
@@ -136,55 +189,47 @@ def main():
     initial_delay = 5  # segundos
     response = None
 
-    models_to_try = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash"]
+    # Se puede forzar un modelo con la variable de entorno GEMINI_MODEL (se prueba primero)
+    models_to_try = ["gemini-3.8-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash", "gemini-2.5-flash"]
+    if os.environ.get("GEMINI_MODEL"):
+        models_to_try.insert(0, os.environ["GEMINI_MODEL"])
 
-    for attempt in range(max_retries):
-        model_name = models_to_try[attempt % len(models_to_try)]
+    attempt = 0
+    model_idx = 0
+    while response is None:
+        if model_idx >= len(models_to_try):
+            print("Error: ningún modelo de Gemini disponible. Abortando.")
+            sys.exit(1)
+        model_name = models_to_try[model_idx]
         try:
             response = client.models.generate_content(
                 model=model_name,
                 contents=prompt
             )
-            break
         except Exception as e:
-            if attempt == max_retries - 1:
+            print(f"Error al llamar a Gemini con modelo {model_name}: {e}")
+            msg = str(e)
+            # Modelo retirado/no existente: pasar al siguiente sin esperar
+            if "404" in msg or "NOT_FOUND" in msg:
+                model_idx += 1
+                continue
+            attempt += 1
+            if attempt >= max_retries:
                 print(f"Error persistente tras {max_retries} intentos al llamar a Gemini. Abortando.")
                 raise
-            delay = initial_delay * (backoff_factor ** attempt)
-            print(f"Error al llamar a Gemini con modelo {model_name}: {e}")
-            print(f"Reintentando en {delay} segundos (intento {attempt + 1}/{max_retries})...")
+            delay = initial_delay * (backoff_factor ** (attempt - 1))
+            print(f"Reintentando en {delay} segundos (intento {attempt}/{max_retries})...")
             time.sleep(delay)
 
     output = response.text.strip()
 
-    if output == "SKIP" or "SKIP" in output:
+    if output.strip("`*\"' \n") == "SKIP":
         print("La IA ha decidido saltar esta semana por falta de recursos relevantes.")
         sys.exit(0)
 
-    try:
-        # Extraer JSON de forma robusta
-        clean_output = output
-        if "```" in clean_output:
-            lines = clean_output.splitlines()
-            code_lines = []
-            in_block = False
-            for line in lines:
-                if line.strip().startswith("```"):
-                    in_block = not in_block
-                    continue
-                if in_block:
-                    code_lines.append(line)
-            if code_lines:
-                clean_output = "\n".join(code_lines)
-
-        start_idx = clean_output.find("{")
-        end_idx = clean_output.rfind("}")
-        if start_idx != -1 and end_idx != -1:
-            clean_output = clean_output[start_idx:end_idx+1]
-
-        data = json.loads(clean_output)
-    except json.JSONDecodeError as e:
-        print("Error parseando el JSON de Gemini. Output recibido:")
+    data = extract_resource(output, valid_links)
+    if data is None:
+        print("Error: no se encontró un recurso JSON válido (con enlace del feed) en la respuesta de Gemini. Output recibido:")
         print(output)
         sys.exit(1)
 
