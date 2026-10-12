@@ -78,5 +78,15 @@
     "link": "https://tympanus.net/codrops/2026/09/06/building-a-real-time-3d-face-mask-with-mediapipe-threlte-and-three-js/",
     "category": "ai",
     "category_id": 16
+  },
+  {
+    "date": "2026-10-12T12:11:57.260285+00:00",
+    "week": 42,
+    "source": "Product Hunt",
+    "title": "Extrae datos web con una sola API",
+    "content_text": "Convierte cualquier web en datos limpios de forma automática.",
+    "link": "https://www.producthunt.com/products/context-dev",
+    "category": "tools",
+    "category_id": 4
   }
 ]
