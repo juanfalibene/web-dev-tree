@@ -88,5 +88,15 @@
     "link": "https://www.producthunt.com/products/context-dev",
     "category": "tools",
     "category_id": 4
+  },
+  {
+    "date": "2026-10-19T10:00:49.229855+00:00",
+    "week": 43,
+    "source": "A List Apart",
+    "title": "Accesibilidad web con IA",
+    "content_text": "Descubre cómo usar IA para crear webs más accesibles.",
+    "link": "https://alistapart.com/article/opportunities-for-ai-in-accessibility/",
+    "category": "ai",
+    "category_id": 16
   }
 ]
