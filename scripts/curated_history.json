@@ -98,5 +98,15 @@
     "link": "https://alistapart.com/article/opportunities-for-ai-in-accessibility/",
     "category": "ai",
     "category_id": 16
+  },
+  {
+    "date": "2026-10-26T10:15:20.310661+00:00",
+    "week": 44,
+    "source": "web.dev",
+    "title": "Nuevas funciones en navegadores",
+    "content_text": "Descubre lo último y más útil que llegó a tu navegador.",
+    "link": "https://web.dev/blog/web-platform-09-2026?hl=en",
+    "category": "blogs",
+    "category_id": 12
   }
 ]
