@@ -108,5 +108,15 @@
     "link": "https://web.dev/blog/web-platform-09-2026?hl=en",
     "category": "blogs",
     "category_id": 12
+  },
+  {
+    "date": "2026-11-02T12:39:10.278826+00:00",
+    "week": 45,
+    "source": "DEV Community",
+    "title": "¿Sin Stripe? 3 formas de cobrar",
+    "content_text": "Descubre cómo recibir pagos online en tu web desde cualquier país.",
+    "link": "https://dev.to/hafedh_bendhia_d4882844b/stripe-doesnt-work-in-your-country-the-3-setups-that-actually-do-1b99",
+    "category": "tools",
+    "category_id": 4
   }
 ]
