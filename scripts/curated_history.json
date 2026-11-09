@@ -118,5 +118,15 @@
     "link": "https://dev.to/hafedh_bendhia_d4882844b/stripe-doesnt-work-in-your-country-the-3-setups-that-actually-do-1b99",
     "category": "tools",
     "category_id": 4
+  },
+  {
+    "date": "2026-11-09T12:59:02.609569+00:00",
+    "week": 46,
+    "source": "freeCodeCamp News",
+    "title": "Crea generador de PDFs",
+    "content_text": "Convierte tus diseños web en PDFs fácilmente con JavaScript. ¡Ideal para principiantes!",
+    "link": "https://www.freecodecamp.org/news/build-pdf-storyboard-generator-javascript/",
+    "category": "tutorials",
+    "category_id": 6
   }
 ]
