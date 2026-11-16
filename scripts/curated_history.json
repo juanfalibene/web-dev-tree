@@ -128,5 +128,15 @@
     "link": "https://www.freecodecamp.org/news/build-pdf-storyboard-generator-javascript/",
     "category": "tutorials",
     "category_id": 6
+  },
+  {
+    "date": "2026-11-16T12:53:08.935024+00:00",
+    "week": 47,
+    "source": "GitHub Blog",
+    "title": "Usa Copilot más allá del código",
+    "content_text": "Aprende a planear, revisar y depurar tus proyectos usando IA.",
+    "link": "https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/",
+    "category": "ai",
+    "category_id": 16
   }
 ]
