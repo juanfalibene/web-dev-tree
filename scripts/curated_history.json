@@ -138,5 +138,15 @@
     "link": "https://github.blog/ai-and-ml/github-copilot/beyond-code-generation-a-developers-guide-to-agentic-engineering/",
     "category": "ai",
     "category_id": 16
+  },
+  {
+    "date": "2026-11-23T14:50:49.298840+00:00",
+    "week": 48,
+    "source": "Chromium Blog",
+    "title": "Notificaciones menos molestas",
+    "content_text": "Reduce el ruido de notificaciones con esta nueva función inteligente de Chrome.",
+    "link": "https://blog.chromium.org/2025/10/automatic-notification-permission.html",
+    "category": "tools",
+    "category_id": 4
   }
 ]
